@@ -1,10 +1,26 @@
 services:
-  ffc-template-node:
+  aphw-ddi-documents:
     build:
       context: .
       target: production
-    image: ffc-template-node
-    container_name: ffc-template-node
+    image: aphw-ddi-documents
+    container_name: aphw-ddi-documents
     environment:
-      APPINSIGHTS_CLOUDROLE: ffc-template-node-local
+      APPINSIGHTS_CLOUDROLE: aphw-ddi-documents-local
       APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}
+      APPLICATIONDOCCREATIONREQUEST_QUEUE_ADDRESS: ${APPLICATIONDOCCREATIONREQUEST_QUEUE_ADDRESS:-aphw-ddi-document-request}${MESSAGE_QUEUE_SUFFIX}
+      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING:-changeme}
+      AZURE_STORAGE_ACCOUNT_NAME: ${AZURE_STORAGE_ACCOUNT_NAME:-devstoreaccount1}
+      AZURE_STORAGE_USE_CONNECTION_STRING: "true"
+      CARBON_COPY_EMAIL_ADDRESS: ${CARBON_COPY_EMAIL_ADDRESS}
+      MESSAGE_QUEUE_HOST: ${MESSAGE_QUEUE_HOST}
+      MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD}
+      MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER}
+      NOTIFY_API_KEY: ${NOTIFY_API_KEY:-changeme}
+      NOTIFY_TEMPLATE_ID_CERTIFICATE_COMPLETE: ${NOTIFY_TEMPLATE_ID_CERTIFICATE_COMPLETE:-60428b0a-22d3-48a1-aaf5-fd8f9e711b30}
+
+  aphw-ddi-documents-azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:3.23.0
+    command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0"
+    labels:
+      com.docker.compose.pay.role: aphw-ddi-compensation-scheme-azurite
