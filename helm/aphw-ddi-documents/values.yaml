@@ -26,6 +26,13 @@ container:
   limitMemory: 100Mi
   limitCpu: 100m
   port: 3000
+  azureStorageConnectionString: dummy
+  azureStorageUseConnectionString: false
+  azureStorageAccountName: aphwddi
+  messageQueueHost: host
+  messageQueuePassword: password
+  messageQueueUser: user
+  notifyApiKey: notifyApiKey
 
 livenessProbe:
   path: /healthz
