@@ -1,25 +1,27 @@
-const joi = require('joi')
+const Joi = require('joi')
 
-const schema = joi.object({
-  exemptionOrder: joi.number.allow([2023, 2015]).required(),
-  data: joi.object({
-    owner: joi.object({
-      name: joi.string().required(),
-      address: joi.object({
-        line1: joi.string().required(),
-        line2: joi.string().optional().default(''),
-        line3: joi.string().default(''),
-        postcode: joi.string().required(),
-      }),
-      indexNumber: joi.string().required(),
-      microchipNumber: joi.string().required(),
-      breed: joi.string().required(),
-      sex: joi.string().allow(['Male', 'Female']).required(),
-      dateOfBirth: joi.string().required(),
-      colour: joi.string().required(),
-      certificateIssued: joi.date().iso().optional().default(new Date())
+const schema = Joi.object({
+  exemptionOrder: Joi.number().allow(2023, 2015).required(),
+  data: Joi.object({
+    owner: Joi.object({
+      name: Joi.string().required(),
+      address: Joi.object({
+        line1: Joi.string().required(),
+        line2: Joi.string().optional().default(''),
+        line3: Joi.string().default(''),
+        postcode: Joi.string().required(),
+      }).required(),
+    }).required(),
+    dog: Joi.object({
+      indexNumber: Joi.string().required(),
+      microchipNumber: Joi.string().required(),
+      breed: Joi.string().required(),
+      sex: Joi.string().allow('Male', 'Female').required(),
+      birthDate: Joi.string().required(),
+      colour: Joi.string().required(),
+      certificateIssued: Joi.date().iso().optional().default(new Date())
     }).required()
-  })
+  }).required()
 })
 
 const validateCertificateRequest = (request) => {

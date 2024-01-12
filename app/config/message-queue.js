@@ -9,12 +9,7 @@ const sharedConfigSchema = {
 }
 
 const schema = Joi.object({
-  applicationdDocCreationRequestQueue: {
-    address: Joi.string(),
-    type: Joi.string(),
-    ...sharedConfigSchema
-  },
-  certificateIssueRequestQueue: {
+  certificateRequestQueue: {
     address: Joi.string(),
     type: Joi.string(),
     ...sharedConfigSchema
@@ -30,13 +25,8 @@ const sharedConfig = {
 }
 
 const config = {
-  applicationdDocCreationRequestQueue: {
-    address: process.env.APPLICATIONDOCCREATIONREQUEST_QUEUE_ADDRESS,
-    type: 'queue',
-    ...sharedConfig
-  },
-  certificateIssueRequestQueue: {
-    address: process.env.CERTIFICATE_ISSUE_REQUEST_QUEUE_ADDRESS,
+  certificateRequestQueue: {
+    address: process.env.CERTIFICATE_REQUEST_QUEUE_ADDRESS,
     type: 'queue',
     ...sharedConfig
   }
