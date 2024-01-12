@@ -1,5 +1,5 @@
-const generateDocument = require('../document')
-const { sendCertificateEmail } = require('../email/notify-send')
+const generateDocument = require('../../../lib/document')
+const { sendCertificateEmail } = require('../../../email/notify-send')
 const { validateDocumentRequest } = require('./document-request-schema')
 
 const processDocumentRequest = async (message, receiver) => {

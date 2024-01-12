@@ -1,5 +1,5 @@
 const createFilename = require('./create-filename')
-const { uploadBlob } = require('../storage')
+const { uploadBlob } = require('../../storage')
 
 const publishDocument = (pdfDocGenerator, data) => {
   const filename = createFilename(data)
