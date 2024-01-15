@@ -1,6 +1,5 @@
 const PDFDocument = require('pdfkit')
 
-const { getCertificateTemplate } = require('../storage/repos/certificate-template')
 const { findFont } = require('./fonts')
 const { formatDate } = require('../date-helpers')
 
@@ -9,7 +8,7 @@ const processTemplate = (doc, files, values) => {
     const { type, name, key, text, items, font: fontId, size, x, y, lineBreak, options } = item
 
     switch (type) {
-      case 'text':
+      case 'text': {
         const value = values[key] ? values[key] : text
 
         doc.font(findFont(fontId))
@@ -22,17 +21,21 @@ const processTemplate = (doc, files, values) => {
         }
 
         break
-      case 'image':
+      }
+      case 'image': {
         doc.image(files[name], x, y, options)
         break
-      case 'list':
+      }
+      case 'list': {
         doc.font(findFont(fontId))
           .fontSize(size)
           .list(items, options)
-        break;
-      case 'page':
+        break
+      }
+      case 'page': {
         doc.addPage(options)
         break
+      }
       default:
         throw new Error(`Unknown type ${type}`)
     }
@@ -59,28 +62,26 @@ const getCertificateValues = (data) => ({
   certificateIssueDate: formatDate(data.dog.certificateIssued)
 })
 
-const generateCertificate = (data) => {
-  return new Promise(async (resolve, reject) => {
+const generateCertificate = (template, data) => {
+  return new Promise((resolve, reject) => {
     try {
-      const files = await getCertificateTemplate(data.exemptionOrder)
-
       const values = getCertificateValues(data)
 
       const doc = new PDFDocument({ autoFirstPage: false })
-  
-      processTemplate(doc, files, values)
-  
+
+      processTemplate(doc, template, values)
+
       doc.end()
-  
+
       const chunks = []
-  
+
       doc.on('data', (chunk) => {
         chunks.push(chunk)
       })
-  
+
       doc.on('end', () => {
         const buffer = Buffer.concat(chunks)
-  
+
         resolve(buffer)
       })
     } catch (err) {

@@ -1,7 +1,7 @@
 const { blobServiceClient } = require('../get-blob-client')
 const { storageConfig } = require('../../../config')
 
-let template = {}
+const template = {}
 let logo
 let signature
 

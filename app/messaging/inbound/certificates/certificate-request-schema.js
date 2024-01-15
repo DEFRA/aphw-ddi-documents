@@ -11,8 +11,8 @@ const schema = Joi.object({
         line1: Joi.string().required(),
         line2: Joi.string().optional().default(''),
         line3: Joi.string().optional().default(''),
-        postcode: Joi.string().required(),
-      }).required(),
+        postcode: Joi.string().required()
+      }).required()
     }).required(),
     dog: Joi.object({
       indexNumber: Joi.string().required(),

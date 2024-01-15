@@ -13,7 +13,6 @@ const start = async () => {
 }
 
 const stop = async () => {
-  await documentGenerationReceiver.closeConnection()
   await certificateRequestReceiver.closeConnection()
 }
 

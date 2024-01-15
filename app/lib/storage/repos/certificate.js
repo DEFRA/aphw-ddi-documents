@@ -6,7 +6,7 @@ const uploadCertificate = async (indexNumber, buffer) => {
 
   await container.createIfNotExists()
 
-  const filename = `${indexNumber}_${new Date().toJSON().slice(0,10).replaceAll('-', '_')}.pdf`
+  const filename = `${indexNumber}_${new Date().toJSON().slice(0, 10).replaceAll('-', '_')}.pdf`
 
   const blobClient = container.getBlockBlobClient(`${indexNumber}/${filename}`)
 
