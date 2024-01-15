@@ -23,4 +23,4 @@ services:
     image: mcr.microsoft.com/azure-storage/azurite:3.23.0
     command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0"
     labels:
-      com.docker.compose.pay.role: aphw-ddi-compensation-scheme-azurite
+      com.docker.compose.pay.role: aphw-ddi-documents-azurite

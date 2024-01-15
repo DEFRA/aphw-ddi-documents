@@ -21,6 +21,7 @@
     "@azure/storage-blob": "^12.11.0",
     "@hapi/hapi": "21.3.2",
     "applicationinsights": "2.8.0",
+    "date-fns": "^3.2.0",
     "ffc-messaging": "^2.6.2",
     "joi": "^17.9.1",
     "log-timestamp": "0.3.0",

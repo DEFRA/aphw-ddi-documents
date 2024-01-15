@@ -32,6 +32,7 @@ container:
   messageQueueHost: host
   messageQueuePassword: password
   messageQueueUser: user
+  certificateRequestQueue: aphw-ddi-certificate-request
   notifyApiKey: notifyApiKey
 
 livenessProbe:
