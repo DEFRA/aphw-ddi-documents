@@ -3,8 +3,8 @@ const PDFDocument = require('pdfkit')
 const { findFont } = require('./fonts')
 const { formatDate } = require('../date-helpers')
 
-const processTemplate = (doc, files, values) => {
-  for (const item of files.template) {
+const processTemplate = (doc, template, values) => {
+  for (const item of template.definition) {
     const { type, name, key, text, items, font: fontId, size, x, y, lineBreak, options } = item
 
     switch (type) {
@@ -23,7 +23,7 @@ const processTemplate = (doc, files, values) => {
         break
       }
       case 'image': {
-        doc.image(files[name], x, y, options)
+        doc.image(template[name], x, y, options)
         break
       }
       case 'list': {

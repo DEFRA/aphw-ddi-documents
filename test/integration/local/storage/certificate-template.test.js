@@ -39,9 +39,9 @@ describe('certificate template repo', () => {
     await seedTemplate()
     await seedStaticFiles()
 
-    const { template, logo, signature } = await getCertificateTemplate(2015)
+    const { definition, logo, signature } = await getCertificateTemplate(2015)
 
-    expect(template).toEqual({ hello: 'world' })
+    expect(definition).toEqual({ hello: 'world' })
     expect(logo).toEqual(Buffer.from('hello world'))
     expect(signature).toEqual(Buffer.from('hello world'))
   })

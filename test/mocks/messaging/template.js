@@ -1,5 +1,5 @@
 const template = {
-  template: [
+  definition: [
     {
       type: 'page'
     },

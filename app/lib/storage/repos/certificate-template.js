@@ -1,19 +1,19 @@
 const { blobServiceClient } = require('../get-blob-client')
 const { storageConfig } = require('../../../config')
 
-const template = {}
+const definition = {}
 let logo
 let signature
 
 const getCertificateTemplate = async (exemptionOrder) => {
-  if (!(template[exemptionOrder] && logo && signature)) {
-    template[exemptionOrder] = await getTemplateFile(exemptionOrder)
+  if (!(definition[exemptionOrder] && logo && signature)) {
+    definition[exemptionOrder] = await getTemplateFile(exemptionOrder)
     logo = await getStaticFile('logo.png')
     signature = await getStaticFile('signature.png')
   }
 
   return {
-    template: JSON.parse(template[exemptionOrder]),
+    definition: JSON.parse(definition[exemptionOrder]),
     logo,
     signature
   }
