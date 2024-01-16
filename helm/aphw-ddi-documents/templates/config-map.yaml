@@ -4,4 +4,9 @@ data:
   NODE_ENV: {{ quote .Values.environment }}
   PORT: {{ quote .Values.container.port }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
+  {{- if and (.Values.environmentCode) (not .Values.pr) }}
+  CERTIFICATE_REQUEST_QUEUE_ADDRESS: {{ .Values.container.certificateRequestQueue }}-{{ .Values.environmentCode }}
+  {{- else }}
+  CERTIFICATE_REQUEST_QUEUE_ADDRESS: {{ .Values.container.certificateRequestQueue }}
+  {{- end }}
 {{- end -}}
