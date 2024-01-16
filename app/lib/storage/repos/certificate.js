@@ -1,14 +1,12 @@
 const { blobServiceClient } = require('../get-blob-client')
 const { storageConfig } = require('../../../config')
 
-const uploadCertificate = async (indexNumber, buffer) => {
+const uploadCertificate = async (indexNumber, certificateId, buffer) => {
   const container = blobServiceClient.getContainerClient(storageConfig.certificateContainer)
 
   await container.createIfNotExists()
 
-  const filename = `${indexNumber}_${new Date().toJSON().slice(0, 10).replaceAll('-', '_')}.pdf`
-
-  const blobClient = container.getBlockBlobClient(`${indexNumber}/${filename}`)
+  const blobClient = container.getBlockBlobClient(`${indexNumber}/${certificateId}.pdf`)
 
   await blobClient.uploadData(buffer)
 }

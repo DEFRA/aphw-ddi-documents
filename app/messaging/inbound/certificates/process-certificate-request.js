@@ -7,17 +7,17 @@ const { getCertificateTemplate } = require('../../../lib/storage/repos/certifica
 
 const processCertificateIssueRequest = async (message, receiver) => {
   try {
-    const { body } = validateCertificateRequest(message.body)
+    const { body } = validateCertificateRequest(message)
 
     console.log('Received DDI certificate issue request: ', util.inspect(message.body, false, null, true))
 
     const template = await getCertificateTemplate(body.exemptionOrder)
     const cert = await generateCertificate(template, body)
-    await uploadCertificate(body.dog.indexNumber, cert)
+    await uploadCertificate(body.dog.indexNumber, body.certificateId, cert)
 
     await receiver.completeMessage(message)
   } catch (err) {
-    console.error('Unable to DDI certificate issue request: ', err.message)
+    console.error('Unable to process DDI certificate issue request: ', err.message)
     await receiver.deadLetterMessage(message)
   }
 }

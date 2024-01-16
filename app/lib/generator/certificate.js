@@ -36,8 +36,6 @@ const processTemplate = (doc, files, values) => {
         doc.addPage(options)
         break
       }
-      default:
-        throw new Error(`Unknown type ${type}`)
     }
 
     if (lineBreak) {
@@ -63,30 +61,26 @@ const getCertificateValues = (data) => ({
 })
 
 const generateCertificate = (template, data) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const values = getCertificateValues(data)
+  return new Promise((resolve) => {
+    const values = getCertificateValues(data)
 
-      const doc = new PDFDocument({ autoFirstPage: false })
+    const doc = new PDFDocument({ autoFirstPage: false })
 
-      processTemplate(doc, template, values)
+    processTemplate(doc, template, values)
 
-      doc.end()
+    doc.end()
 
-      const chunks = []
+    const chunks = []
 
-      doc.on('data', (chunk) => {
-        chunks.push(chunk)
-      })
+    doc.on('data', (chunk) => {
+      chunks.push(chunk)
+    })
 
-      doc.on('end', () => {
-        const buffer = Buffer.concat(chunks)
+    doc.on('end', () => {
+      const buffer = Buffer.concat(chunks)
 
-        resolve(buffer)
-      })
-    } catch (err) {
-      reject(err)
-    }
+      resolve(buffer)
+    })
   })
 }
 

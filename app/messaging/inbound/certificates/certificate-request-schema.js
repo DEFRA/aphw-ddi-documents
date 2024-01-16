@@ -4,7 +4,7 @@ const { CERTIFICATE_REQUESTED } = require('../../../constants/events')
 const schema = Joi.object({
   body: Joi.object({
     exemptionOrder: Joi.number().allow(2023, 2015).required(),
-    sessionId: Joi.string().uuid().required(),
+    certificateId: Joi.string().uuid().required(),
     owner: Joi.object({
       name: Joi.string().required(),
       address: Joi.object({
