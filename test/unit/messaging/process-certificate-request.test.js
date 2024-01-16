@@ -25,7 +25,7 @@ describe('process certificate request message', () => {
     await expect(processCertificateIssueRequest(valid, mockReceiver)).resolves.toBeUndefined()
 
     expect(getCertificateTemplate).toHaveBeenCalledTimes(1)
-    expect(getCertificateTemplate).toHaveBeenCalledWith(valid.body.exemptionOrder)
+    expect(getCertificateTemplate).toHaveBeenCalledWith(2015)
 
     expect(generateCertificate).toHaveBeenCalledTimes(1)
     expect(generateCertificate).toHaveBeenCalledWith({}, {
@@ -53,7 +53,7 @@ describe('process certificate request message', () => {
     })
 
     expect(uploadCertificate).toHaveBeenCalledTimes(1)
-    expect(uploadCertificate).toHaveBeenCalledWith(valid.body.dog.indexNumber, valid.body.certificateId, Buffer.from(''))
+    expect(uploadCertificate).toHaveBeenCalledWith('ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
 
     expect(mockReceiver.completeMessage).toHaveBeenCalledTimes(1)
   })
