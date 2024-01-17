@@ -4,7 +4,7 @@ describe('certificate generator', () => {
   const { valid } = require('../../mocks/messaging/certificate-request')
 
   test('should generate pdf', async () => {
-    const cert = await generateCertificate(template, valid.body.data)
+    const cert = await generateCertificate(template, valid.body)
 
     expect(cert).toEqual(expect.any(Buffer))
   })
