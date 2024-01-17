@@ -18,6 +18,10 @@ containerSecret:
   name: aphw-ddi-documents-container-secret
   type: Opaque
 
+azureIdentity:
+  clientID: not-a-real-clientID
+  resourceID: not-a-real-resourceID
+
 deployment: {}
 
 container:
@@ -50,3 +54,5 @@ readinessProbe:
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
+
+aadPodIdentity: true
