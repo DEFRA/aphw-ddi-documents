@@ -55,9 +55,9 @@ const getCertificateValues = (data) => ({
   dogName: data.dog.name,
   dogBreed: data.dog.breed,
   dogSex: data.dog.sex,
-  dogBirthDate: formatDate(data.dog.birthDate),
+  dogBirthDate: data.dog.birthDate ? formatDate(data.dog.birthDate) : '',
   dogColour: data.dog.colour,
-  certificateIssueDate: formatDate(data.dog.certificateIssued)
+  certificateIssueDate: data.dog.certificateIssued ? formatDate(data.dog.certificateIssued) : ''
 })
 
 const generateCertificate = (template, data) => {

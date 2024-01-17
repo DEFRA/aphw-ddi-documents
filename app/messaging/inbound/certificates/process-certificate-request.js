@@ -7,7 +7,7 @@ const { getCertificateTemplate } = require('../../../lib/storage/repos/certifica
 
 const processCertificateIssueRequest = async (message, receiver) => {
   try {
-    const { data } = validateCertificateRequest(message.body)
+    const data = validateCertificateRequest(message.body)
 
     console.log('Received DDI certificate issue request: ', util.inspect(message.body, false, null, true))
 
