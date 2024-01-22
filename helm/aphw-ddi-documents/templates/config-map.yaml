@@ -9,7 +9,4 @@ data:
   {{- else }}
   CERTIFICATE_REQUEST_QUEUE_ADDRESS: {{ .Values.container.certificateRequestQueue }}
   {{- end }}
-  MESSAGE_QUEUE_HOST: {{ quote .Values.container.messageQueueHost }}
-  MESSAGE_QUEUE_PASSWORD: {{ quote .Values.container.messageQueuePassword }}
-  MESSAGE_QUEUE_USER: {{ quote .Values.container.messageQueueUser }}
 {{- end -}}
