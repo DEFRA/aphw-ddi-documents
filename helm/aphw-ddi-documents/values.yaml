@@ -33,9 +33,7 @@ container:
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
   azureStorageAccountName: aphwddi
-  messageQueueHost: host
-  messageQueuePassword: password
-  messageQueueUser: user
+  mmessageQueueHost: namespace.servicebus.windows.net
   certificateRequestQueue: aphw-ddi-certificate-request
   notifyApiKey: notifyApiKey
 
