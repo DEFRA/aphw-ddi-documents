@@ -7,6 +7,8 @@ const processTemplate = (doc, template, values) => {
   for (const item of template.definition) {
     const { type, name, key, text, items, font: fontId, size, x, y, lineBreak, options } = item
 
+    console.log(`processTemplate ${type}`)
+
     switch (type) {
       case 'text': {
         const value = values[key] ? values[key] : text
@@ -66,23 +68,28 @@ const generateCertificate = (template, data) => {
 
     const values = getCertificateValues(data)
 
+    console.log('generateCertificate values', values)
+
     const doc = new PDFDocument({ autoFirstPage: false })
-
-    processTemplate(doc, template, values)
-
-    doc.end()
 
     const chunks = []
 
+    processTemplate(doc, template, values)
+
     doc.on('data', (chunk) => {
+      console.log('generateCertificate adding chunk')
       chunks.push(chunk)
     })
 
     doc.on('end', () => {
+      console.log('generateCertificate ending. Len = ', chunks.length)
+
       const buffer = Buffer.concat(chunks)
 
       resolve(buffer)
     })
+
+    doc.end()
   })
 }
 
