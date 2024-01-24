@@ -13,11 +13,11 @@ const processCertificateIssueRequest = async (message, receiver) => {
 
     const template = await getCertificateTemplate(data.exemptionOrder)
 
-    console.log('Got certificate template')
+    console.log('Got certificate template', template?.definition?.length)
 
     const cert = await generateCertificate(template, data)
 
-    console.log('Generated certificate')
+    console.log('Generated certificate', cert.length)
 
     await uploadCertificate(data.dog.indexNumber, data.certificateId, cert)
 
