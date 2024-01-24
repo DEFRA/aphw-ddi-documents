@@ -13,11 +13,11 @@ const processCertificateIssueRequest = async (message, receiver) => {
 
     const template = await getCertificateTemplate(data.exemptionOrder)
 
-    console.log('Got certificate template', template?.definition?.length)
+    console.log('Got certificate template')
 
     const cert = await generateCertificate(template, data)
 
-    console.log('Generated certificate', cert.length)
+    console.log('Generated certificate')
 
     await uploadCertificate(data.dog.indexNumber, data.certificateId, cert)
 
@@ -26,7 +26,6 @@ const processCertificateIssueRequest = async (message, receiver) => {
     await receiver.completeMessage(message)
   } catch (err) {
     console.log('Unable to process DDI certificate issue request: ', err.message)
-    console.error('Unable to process DDI certificate issue request: ', err.message)
     await receiver.deadLetterMessage(message)
   }
 }
