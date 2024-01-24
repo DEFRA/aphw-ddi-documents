@@ -20,21 +20,31 @@ const getCertificateTemplate = async (exemptionOrder) => {
 }
 
 const getTemplateFile = async (exemptionOrder) => {
+  console.log(`getTemplateFile() starting. Container ${storageConfig.certificateTemplateContainer}`)
+
   const container = blobServiceClient.getContainerClient(storageConfig.certificateTemplateContainer)
 
   await container.createIfNotExists()
+
+  console.log('getTemplateFile() got container')
 
   const filename = `${exemptionOrder}.template.json`
 
   const blobClient = container.getBlockBlobClient(filename)
 
+  console.log('getTemplateFile() got client')
+
   const exists = await blobClient.exists()
+
+  console.log('getTemplateFile() exists', exists)
 
   if (!exists) {
     throw new Error(`Template (${filename}) does not exist`)
   }
 
   const buffer = await blobClient.downloadToBuffer()
+
+  console.log('getTemplateFile() got buffer')
 
   return buffer.toString()
 }
