@@ -20,7 +20,6 @@ const getCertificateTemplate = async (exemptionOrder) => {
 }
 
 const getTemplateFile = async (exemptionOrder) => {
-
   console.log(`getTemplateFile() starting. Container ${storageConfig.certificateTemplateContainer}`)
 
   const container = blobServiceClient.getContainerClient(storageConfig.certificateTemplateContainer)
