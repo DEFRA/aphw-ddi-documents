@@ -44,7 +44,7 @@ const getTemplateFile = async (exemptionOrder) => {
 
   const buffer = await blobClient.downloadToBuffer()
 
-  console.log('getTemplateFile() got buffer')
+  console.log('getTemplateFile() got buffer', buffer.length)
 
   return buffer.toString()
 }

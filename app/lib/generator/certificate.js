@@ -74,20 +74,21 @@ const generateCertificate = (template, data) => {
 
     const chunks = []
 
-    processTemplate(doc, template, values)
-
     doc.on('data', (chunk) => {
       console.log('generateCertificate adding chunk')
       chunks.push(chunk)
     })
 
     doc.on('end', () => {
+      console.log('generateCertificate hitting end')
       console.log('generateCertificate ending. Len = ', chunks.length)
 
       const buffer = Buffer.concat(chunks)
 
       resolve(buffer)
     })
+
+    processTemplate(doc, template, values)
 
     doc.end()
   })
