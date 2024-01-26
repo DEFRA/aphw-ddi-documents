@@ -7,8 +7,6 @@ const processTemplate = (doc, template, values) => {
   for (const item of template.definition) {
     const { type, name, key, text, items, font: fontId, size, x, y, lineBreak, options } = item
 
-    console.log(`processTemplate ${type}`)
-
     switch (type) {
       case 'text': {
         const value = values[key] ? values[key] : text
