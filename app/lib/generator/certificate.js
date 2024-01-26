@@ -47,10 +47,7 @@ const processTemplate = (doc, template, values) => {
 const getCertificateValues = (data) => {
   const model = {
     ownerName: data.owner.name,
-    addressLine1: data.owner.address.line1,
-    addressLine2: data.owner.address.line2,
-    addressLine3: data.owner.address.line3,
-    addressPostcode: data.owner.address.postcode,
+    addressLine1: shuffleUpAddressLines(data.owner.address),
     dogIndexNumber: data.dog.indexNumber,
     dogMicrochipNumber: data.dog.microchipNumber,
     dogName: data.dog.name,
@@ -64,19 +61,16 @@ const getCertificateValues = (data) => {
   return model
 }
 
-const shuffleUpAddressLines = (model) => {
+const shuffleUpAddressLines = (addr) => {
   const lines = []
-  lines.push(model.addressLine1)
-  lines.push(model.addressLine2)
-  lines.push(model.addressLine3)
-  lines.push(model.addressPostcode)
+  lines.push(addr.line1)
+  lines.push(addr.line2)
+  lines.push(addr.line3)
+  lines.push(addr.postcode)
   const shuffledUp = lines.filter(x => {
     return x && x !== ''
   })
-  model.addressLine1 = shuffledUp.length > 0 ? shuffledUp[0] : ''
-  model.addressLine2 = shuffledUp.length > 1 ? shuffledUp[1] : ''
-  model.addressLine3 = shuffledUp.length > 2 ? shuffledUp[2] : ''
-  model.addressPostcode = shuffledUp.length > 3 ? shuffledUp[3] : ''
+  return shuffledUp.join('\n')
 }
 
 const generateCertificate = (template, data) => {

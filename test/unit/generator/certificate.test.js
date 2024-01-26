@@ -11,81 +11,63 @@ describe('certificate generator', () => {
 
   test('shuffleUp should handle full address', () => {
     const address = {
-      addressLine1: '1 Test Street',
-      addressLine2: 'Testarea',
-      addressLine3: 'Testington',
-      addressPostcode: 'TS1 1TS'
+      line1: '1 Test Street',
+      line2: 'Testarea',
+      line3: 'Testington',
+      postcode: 'TS1 1TS'
     }
 
-    shuffleUpAddressLines(address)
+    const res = shuffleUpAddressLines(address)
 
-    expect(address.addressLine1).toBe('1 Test Street')
-    expect(address.addressLine2).toBe('Testarea')
-    expect(address.addressLine3).toBe('Testington')
-    expect(address.addressPostcode).toBe('TS1 1TS')
+    expect(res).toBe('1 Test Street\nTestarea\nTestington\nTS1 1TS')
   })
 
   test('shuffleUp should handle missing address line 1', () => {
     const address = {
-      addressLine1: '',
-      addressLine2: 'Testarea',
-      addressLine3: 'Testington',
-      addressPostcode: 'TS1 1TS'
+      line2: 'Testarea',
+      line3: 'Testington',
+      postcode: 'TS1 1TS'
     }
 
-    shuffleUpAddressLines(address)
+    const res = shuffleUpAddressLines(address)
 
-    expect(address.addressLine1).toBe('Testarea')
-    expect(address.addressLine2).toBe('Testington')
-    expect(address.addressLine3).toBe('TS1 1TS')
-    expect(address.addressPostcode).toBe('')
+    expect(res).toBe('Testarea\nTestington\nTS1 1TS')
   })
 
   test('shuffleUp should handle missing address line 2', () => {
     const address = {
-      addressLine1: '1 Test Street',
-      addressLine2: '',
-      addressLine3: 'Testington',
-      addressPostcode: 'TS1 1TS'
+      line1: '1 Test Street',
+      line2: '',
+      line3: 'Testington',
+      postcode: 'TS1 1TS'
     }
 
-    shuffleUpAddressLines(address)
+    const res = shuffleUpAddressLines(address)
 
-    expect(address.addressLine1).toBe('1 Test Street')
-    expect(address.addressLine2).toBe('Testington')
-    expect(address.addressLine3).toBe('TS1 1TS')
-    expect(address.addressPostcode).toBe('')
+    expect(res).toBe('1 Test Street\nTestington\nTS1 1TS')
   })
 
   test('shuffleUp should handle missing address line 3', () => {
     const address = {
-      addressLine1: '1 Test Street',
-      addressLine2: 'Testarea',
-      addressLine3: '',
-      addressPostcode: 'TS1 1TS'
+      line1: '1 Test Street',
+      line2: 'Testarea',
+      postcode: 'TS1 1TS'
     }
 
-    shuffleUpAddressLines(address)
+    const res = shuffleUpAddressLines(address)
 
-    expect(address.addressLine1).toBe('1 Test Street')
-    expect(address.addressLine2).toBe('Testarea')
-    expect(address.addressLine3).toBe('TS1 1TS')
-    expect(address.addressPostcode).toBe('')
+    expect(res).toBe('1 Test Street\nTestarea\nTS1 1TS')
   })
 
   test('shuffleUp should handle missing postcode', () => {
     const address = {
-      addressLine1: '1 Test Street',
-      addressLine2: 'Testarea',
-      addressLine3: 'Testington',
-      addressPostcode: ''
+      line1: '1 Test Street',
+      line2: 'Testarea',
+      line3: 'Testington'
     }
 
-    shuffleUpAddressLines(address)
+    const res = shuffleUpAddressLines(address)
 
-    expect(address.addressLine1).toBe('1 Test Street')
-    expect(address.addressLine2).toBe('Testarea')
-    expect(address.addressLine3).toBe('Testington')
-    expect(address.addressPostcode).toBe('')
+    expect(res).toBe('1 Test Street\nTestarea\nTestington')
   })
 })
