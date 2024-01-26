@@ -20,7 +20,7 @@ const schema = Joi.object({
     sex: Joi.string().optional().allow(null).allow('').default(''),
     birthDate: Joi.date().iso().optional().allow(null).allow('').default(''),
     colour: Joi.string().optional().allow(null).allow('').default(''),
-    certificateIssued: Joi.date().iso().optional().default(new Date())
+    certificateIssued: Joi.date().iso().optional()
   }).required()
 })
 
