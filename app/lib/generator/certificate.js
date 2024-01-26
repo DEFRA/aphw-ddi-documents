@@ -44,21 +44,40 @@ const processTemplate = (doc, template, values) => {
   }
 }
 
-const getCertificateValues = (data) => ({
-  ownerName: data.owner.name,
-  addressLine1: data.owner.address.line1,
-  addressLine2: data.owner.address.line2,
-  addressLine3: data.owner.address.line3,
-  addressPostcode: data.owner.address.postcode,
-  dogIndexNumber: data.dog.indexNumber,
-  dogMicrochipNumber: data.dog.microchipNumber,
-  dogName: data.dog.name,
-  dogBreed: data.dog.breed,
-  dogSex: data.dog.sex,
-  dogBirthDate: data.dog.birthDate ? formatDate(data.dog.birthDate) : '',
-  dogColour: data.dog.colour,
-  certificateIssueDate: data.dog.certificateIssued ? formatDate(data.dog.certificateIssued) : ''
-})
+const getCertificateValues = (data) => {
+  const model = {
+    ownerName: data.owner.name,
+    addressLine1: data.owner.address.line1,
+    addressLine2: data.owner.address.line2,
+    addressLine3: data.owner.address.line3,
+    addressPostcode: data.owner.address.postcode,
+    dogIndexNumber: data.dog.indexNumber,
+    dogMicrochipNumber: data.dog.microchipNumber,
+    dogName: data.dog.name,
+    dogBreed: data.dog.breed,
+    dogSex: data.dog.sex,
+    dogBirthDate: data.dog.birthDate ? formatDate(data.dog.birthDate) : '',
+    dogColour: data.dog.colour,
+    certificateIssueDate: data.dog.certificateIssued ? formatDate(data.dog.certificateIssued) : formatDate(new Date())
+  }
+  shuffleUpAddressLines(model)
+  return model
+}
+
+const shuffleUpAddressLines = (model) => {
+  const lines = []
+  lines.push(model.addressLine1)
+  lines.push(model.addressLine2)
+  lines.push(model.addressLine3)
+  lines.push(model.addressPostcode)
+  const shuffledUp = lines.filter(x => {
+    return x && x !== ''
+  })
+  model.addressLine1 = shuffledUp.length > 0 ? shuffledUp[0] : ''
+  model.addressLine2 = shuffledUp.length > 1 ? shuffledUp[1] : ''
+  model.addressLine3 = shuffledUp.length > 2 ? shuffledUp[2] : ''
+  model.addressPostcode = shuffledUp.length > 3 ? shuffledUp[3] : ''
+}
 
 const generateCertificate = (template, data) => {
   return new Promise((resolve) => {
@@ -85,5 +104,6 @@ const generateCertificate = (template, data) => {
 }
 
 module.exports = {
-  generateCertificate
+  generateCertificate,
+  shuffleUpAddressLines
 }
