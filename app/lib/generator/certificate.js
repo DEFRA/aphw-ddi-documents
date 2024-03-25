@@ -46,6 +46,7 @@ const processTemplate = (doc, template, values) => {
 
 const getCertificateValues = (data) => {
   const model = {
+    organisationName: data.owner.organisationName,
     ownerName: data.owner.name,
     addressLine1: shuffleUpAddressLines(data.owner.address),
     dogIndexNumber: data.dog.indexNumber,

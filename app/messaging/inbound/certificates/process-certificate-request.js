@@ -11,9 +11,11 @@ const processCertificateIssueRequest = async (message, receiver) => {
 
     console.log('Received DDI certificate issue request: ', util.inspect(message.body, false, null, true))
 
-    const template = await getCertificateTemplate(data.exemptionOrder)
+    const templateKey = `${data.exemptionOrder}${data.owner?.organisationName ? '_with_org' : ''}`
 
-    console.log('Got certificate template')
+    const template = await getCertificateTemplate(templateKey)
+
+    console.log(`Got certificate template with key ${templateKey}`)
 
     const cert = await generateCertificate(template, data)
 
