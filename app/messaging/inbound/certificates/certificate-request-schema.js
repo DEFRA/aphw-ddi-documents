@@ -10,7 +10,8 @@ const schema = Joi.object({
       line2: Joi.string().optional().allow(null).allow('').default(''),
       line3: Joi.string().optional().allow(null).allow('').default(''),
       postcode: Joi.string().required()
-    }).required()
+    }).required(),
+    organisationName: Joi.string().optional().allow(null).allow('')
   }).required(),
   dog: Joi.object({
     indexNumber: Joi.string().required(),
