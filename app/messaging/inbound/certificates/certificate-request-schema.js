@@ -2,6 +2,11 @@ const Joi = require('joi')
 
 const schema = Joi.object({
   exemptionOrder: Joi.number().allow(2023, 2015).required(),
+  user: Joi.object({
+    username: Joi.string().required(),
+    displayname: Joi.string().required(),
+    userId: Joi.string().optional().allow(null).allow('')
+  }).required(),
   certificateId: Joi.string().uuid().required(),
   owner: Joi.object({
     name: Joi.string().required(),

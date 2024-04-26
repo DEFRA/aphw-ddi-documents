@@ -38,6 +38,7 @@ container:
   messageQueueHost: namespace.servicebus.windows.net
   certificateRequestQueue: aphw-ddi-certificate-request
   notifyApiKey: notifyApiKey
+  eventsTopicAddress: aphw-ddi-events
 
 livenessProbe:
   path: /healthz

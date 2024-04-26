@@ -1,3 +1,3 @@
-@Library('defra-library@private-repo-issue') _
+@Library('defra-library@v-9') _
 
 buildNodeJs()

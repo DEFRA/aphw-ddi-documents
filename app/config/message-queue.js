@@ -13,6 +13,10 @@ const schema = Joi.object({
     address: Joi.string(),
     type: Joi.string(),
     ...sharedConfigSchema
+  },
+  eventsTopic: {
+    address: Joi.string(),
+    ...sharedConfigSchema
   }
 })
 
@@ -28,6 +32,10 @@ const config = {
   certificateRequestQueue: {
     address: process.env.CERTIFICATE_REQUEST_QUEUE_ADDRESS,
     type: 'queue',
+    ...sharedConfig
+  },
+  eventsTopic: {
+    address: process.env.EVENTS_TOPIC_ADDRESS,
     ...sharedConfig
   }
 }
