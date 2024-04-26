@@ -2,6 +2,10 @@ const valid = {
   body: {
     exemptionOrder: 2015,
     certificateId: '24bfda00-efa5-41d4-8711-9d31d7fcca65',
+    user: {
+      username: 'dev-username',
+      displayname: 'Dev User'
+    },
     owner: {
       name: 'Mr Owner',
       address: {
@@ -26,6 +30,10 @@ const validWithOrg = {
   body: {
     exemptionOrder: 2023,
     certificateId: '24bfda00-efa5-41d4-8711-9d31d7fcca65',
+    user: {
+      username: 'dev-username',
+      displayname: 'Dev User'
+    },
     owner: {
       name: 'Mr Owner',
       address: {
@@ -50,6 +58,10 @@ const validWithOrg = {
 const invalid = {
   body: {
     exemptionOrder: 2027,
+    user: {
+      username: 'dev-username',
+      displayname: 'Dev User'
+    },
     owner: {
       name: 'Mr Owner',
       address: {
