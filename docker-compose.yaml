@@ -16,9 +16,3 @@ services:
       MESSAGE_QUEUE_PASSWORD: ${MESSAGE_QUEUE_PASSWORD:-test}
       MESSAGE_QUEUE_USER: ${MESSAGE_QUEUE_USER:-test}
       EVENTS_TOPIC_ADDRESS: ${EVENTS_TOPIC_ADDRESS:-aphw-ddi-events}${MESSAGE_QUEUE_SUFFIX}
-
-  aphw-ddi-documents-azurite:
-    image: mcr.microsoft.com/azure-storage/azurite:3.23.0
-    command: "azurite-blob --skipApiVersionCheck --loose --blobHost 0.0.0.0"
-    labels:
-      com.docker.compose.pay.role: aphw-ddi-documents-azurite
