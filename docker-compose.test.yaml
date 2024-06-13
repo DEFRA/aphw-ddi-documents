@@ -21,4 +21,4 @@ services:
       AZURE_STORAGE_CERTIFICATE_TEMPLATE_CONTAINER: "certificate-templates"
 
   aphw-ddi-documents-azurite:
-    image: mcr.microsoft.com/azure-storage/azurite:3.23.0
+    image: mcr.microsoft.com/azure-storage/azurite:3.30.0
