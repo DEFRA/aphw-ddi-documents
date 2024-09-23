@@ -32,9 +32,8 @@ const schema = Joi.object({
 })
 
 const validateCertificateRequest = (request) => {
-  console.log('~~~~~~ Chris Debug ~~~~~~ ', 'Request', request)
   const { value, error } = schema.validate(request, { abortEarly: false })
-  console.log('~~~~~~ Chris Debug ~~~~~~ ', 'Value', value)
+
   if (error) {
     throw new Error(`Certificate request validation error: ${error.message}`)
   }
