@@ -5,7 +5,8 @@ const schema = Joi.object({
   user: Joi.object({
     username: Joi.string().required(),
     displayname: Joi.string().required(),
-    userId: Joi.string().optional().allow(null).allow('')
+    userId: Joi.string().optional().allow(null).allow(''),
+    scopes: Joi.array().items(Joi.string())
   }).required(),
   certificateId: Joi.string().uuid().required(),
   owner: Joi.object({
@@ -31,8 +32,9 @@ const schema = Joi.object({
 })
 
 const validateCertificateRequest = (request) => {
+  console.log('~~~~~~ Chris Debug ~~~~~~ ', 'Request', request)
   const { value, error } = schema.validate(request, { abortEarly: false })
-
+  console.log('~~~~~~ Chris Debug ~~~~~~ ', 'Value', value)
   if (error) {
     throw new Error(`Certificate request validation error: ${error.message}`)
   }
