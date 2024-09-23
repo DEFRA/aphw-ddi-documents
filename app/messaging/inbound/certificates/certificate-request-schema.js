@@ -5,7 +5,8 @@ const schema = Joi.object({
   user: Joi.object({
     username: Joi.string().required(),
     displayname: Joi.string().required(),
-    userId: Joi.string().optional().allow(null).allow('')
+    userId: Joi.string().optional().allow(null).allow(''),
+    scopes: Joi.array().items(Joi.string())
   }).required(),
   certificateId: Joi.string().uuid().required(),
   owner: Joi.object({
