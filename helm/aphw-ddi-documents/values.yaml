@@ -23,6 +23,7 @@ azureIdentity:
   resourceID: not-a-real-resourceID
 
 deployment:
+  replicas: 1
   minReplicas: 1
   maxReplicas: 2
   cpuThreshold: 80
