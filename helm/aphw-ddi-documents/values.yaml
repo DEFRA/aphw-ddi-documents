@@ -25,12 +25,12 @@ azureIdentity:
 deployment:
   replicas: 1
   minReplicas: 1
-  maxReplicas: 2
+  maxReplicas: 4
   cpuThreshold: 80
   memoryThreshold: 400Mi
 
 container:
-  requestMemory: 100Mi
+  requestMemory: 120Mi
   requestCpu: 100m
   limitMemory: 500Mi
   limitCpu: 200m
