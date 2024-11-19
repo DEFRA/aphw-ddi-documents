@@ -15,6 +15,7 @@ module.exports = {
     '<rootDir>/test/',
     '<rootDir>/jest.config.js',
     '<rootDir>/jest.setup.js',
+    '<rootDir>/jest.setup.single.js',
     '<rootDir>/app/index.js'
   ],
   modulePathIgnorePatterns: [

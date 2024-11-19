@@ -1,11 +1,11 @@
-const PDFDocument = require('pdfkit')
+const PDFDocument = require('pdfkit-table')
 
 const { findFont } = require('./fonts')
 const { formatDate } = require('../date-helpers')
 
 const processTemplate = (doc, template, values) => {
   for (const item of template.definition) {
-    const { type, name, key, text, items, font: fontId, size, x, y, lineBreak, options } = item
+    const { type, name, key, text, items, font: fontId, size, x, y, lineBreak, table, width, height, options } = item
 
     switch (type) {
       case 'text': {
@@ -34,6 +34,15 @@ const processTemplate = (doc, template, values) => {
       }
       case 'page': {
         doc.addPage(options)
+        break
+      }
+      case 'table': {
+        doc.table(table, options)
+        break
+      }
+      case 'rect': {
+        doc.rect(x, y, width, height)
+        doc.stroke()
         break
       }
     }
@@ -100,5 +109,6 @@ const generateCertificate = (template, data) => {
 
 module.exports = {
   generateCertificate,
-  shuffleUpAddressLines
+  shuffleUpAddressLines,
+  processTemplate
 }
