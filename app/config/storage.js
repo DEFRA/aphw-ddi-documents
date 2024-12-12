@@ -6,6 +6,7 @@ const schema = Joi.object({
   storageAccount: Joi.string().required(),
   certificateContainer: Joi.string().default('certificates'),
   certificateTemplateContainer: Joi.string().default('certificate-templates'),
+  attachmentsContainer: Joi.string().default('attachments'),
   useConnectionString: Joi.boolean().default(false),
   createContainers: Joi.boolean().default(true)
 })
@@ -16,6 +17,7 @@ const config = {
   storageAccount: process.env.AZURE_STORAGE_ACCOUNT_NAME,
   certificateContainer: process.env.AZURE_STORAGE_CERTIFICATE_CONTAINER,
   certificateTemplateContainer: process.env.AZURE_STORAGE_CERTIFICATE_TEMPLATE_CONTAINER,
+  attachmentsContainer: process.env.AZURE_STORAGE_ATTACHMENTS_CONTAINER,
   useConnectionString: process.env.AZURE_STORAGE_USE_CONNECTION_STRING,
   createContainers: process.env.AZURE_STORAGE_CREATE_CONTAINERS
 }

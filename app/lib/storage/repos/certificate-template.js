@@ -6,11 +6,11 @@ let logo
 let signature
 
 const getCertificateTemplate = async (exemptionOrder) => {
-  if (!(definition[exemptionOrder] && logo && signature)) {
-    definition[exemptionOrder] = await getTemplateFile(exemptionOrder)
-    logo = await getStaticFile('logo.png')
-    signature = await getStaticFile('signature.png')
-  }
+  // if (!(definition[exemptionOrder] && logo && signature)) {
+  definition[exemptionOrder] = await getTemplateFile(exemptionOrder)
+  logo = await getStaticFile('logo.png')
+  signature = await getStaticFile('signature.png')
+  // }
 
   return {
     definition: JSON.parse(definition[exemptionOrder]),
