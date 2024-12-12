@@ -22,6 +22,9 @@ module.exports = {
     const indexNumberField = form.getTextField('ddi_index_number')
     indexNumberField.setText(indexNumber)
     const pdfBytes = await doc.save()
+    //
+    // Ensure that any fields you want populated (but dont want to be editable) are set as 'readonly' in Acrobat
+    //
     await uploadCertificate(indexNumber, 'populated', pdfBytes)
 
     return h.response('ok').code(200)
