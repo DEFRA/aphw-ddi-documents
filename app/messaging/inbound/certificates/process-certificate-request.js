@@ -1,7 +1,8 @@
 const util = require('util')
+const { storageConfig } = require('../../../config')
 
 const { generateCertificate } = require('../../../lib/generator/certificate')
-const { uploadCertificate } = require('../../../lib/storage/repos/certificate')
+const { uploadFile } = require('../../../lib/storage/repos/uploading')
 const { validateCertificateRequest } = require('./certificate-request-schema')
 const { getCertificateTemplate } = require('../../../lib/storage/repos/certificate-template')
 const { sendCertificateIssuedToAudit } = require('../../outbound/send-audit')
@@ -22,7 +23,7 @@ const processCertificateIssueRequest = async (message, receiver) => {
 
     console.log('Generated certificate')
 
-    await uploadCertificate(data.dog.indexNumber, data.certificateId, cert)
+    await uploadFile(storageConfig.certificateContainer, data.dog.indexNumber, data.certificateId, cert)
 
     await sendCertificateIssuedToAudit(data)
 

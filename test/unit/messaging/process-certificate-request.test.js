@@ -2,8 +2,8 @@ describe('process certificate request message', () => {
   jest.mock('../../../app/lib/generator/certificate')
   const { generateCertificate } = require('../../../app/lib/generator/certificate')
 
-  jest.mock('../../../app/lib/storage/repos/certificate')
-  const { uploadCertificate } = require('../../../app/lib/storage/repos/certificate')
+  jest.mock('../../../app/lib/storage/repos/uploading')
+  const { uploadFile } = require('../../../app/lib/storage/repos/uploading')
 
   jest.mock('../../../app/lib/storage/repos/certificate-template')
   const { getCertificateTemplate } = require('../../../app/lib/storage/repos/certificate-template')
@@ -52,8 +52,8 @@ describe('process certificate request message', () => {
       }
     })
 
-    expect(uploadCertificate).toHaveBeenCalledTimes(1)
-    expect(uploadCertificate).toHaveBeenCalledWith('ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
+    expect(uploadFile).toHaveBeenCalledTimes(1)
+    expect(uploadFile).toHaveBeenCalledWith('ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
 
     expect(mockReceiver.completeMessage).toHaveBeenCalledTimes(1)
   })
@@ -90,8 +90,8 @@ describe('process certificate request message', () => {
       }
     })
 
-    expect(uploadCertificate).toHaveBeenCalledTimes(1)
-    expect(uploadCertificate).toHaveBeenCalledWith('ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
+    expect(uploadFile).toHaveBeenCalledTimes(1)
+    expect(uploadFile).toHaveBeenCalledWith('ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
 
     expect(mockReceiver.completeMessage).toHaveBeenCalledTimes(1)
   })

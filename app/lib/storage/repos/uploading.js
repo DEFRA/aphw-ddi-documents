@@ -1,8 +1,7 @@
 const { blobServiceClient } = require('../get-blob-client')
-const { storageConfig } = require('../../../config')
 
-const uploadCertificate = async (indexNumber, certificateId, buffer) => {
-  const container = blobServiceClient.getContainerClient(storageConfig.certificateContainer)
+const uploadFile = async (containerName, indexNumber, certificateId, buffer) => {
+  const container = blobServiceClient.getContainerClient(containerName)
 
   await container.createIfNotExists()
 
@@ -12,5 +11,5 @@ const uploadCertificate = async (indexNumber, certificateId, buffer) => {
 }
 
 module.exports = {
-  uploadCertificate
+  uploadFile
 }
