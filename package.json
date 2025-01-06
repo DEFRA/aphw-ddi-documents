@@ -1,6 +1,6 @@
 {
   "name": "aphw-ddi-documents",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Document management and creation",
   "homepage": "https://github.com/DEFRA/aphw-ddi-documents",
   "main": "app/index.js",
