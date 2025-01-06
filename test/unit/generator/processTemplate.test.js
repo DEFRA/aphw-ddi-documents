@@ -187,6 +187,28 @@ describe('processTemplate', () => {
     expect(mockDoc.table).toHaveBeenCalledWith({ headers: [], rows: [] }, { opt1: 'val1' })
   })
 
+  test('should handle table with title', () => {
+    const template = {
+      definition: [
+        {
+          type: 'table',
+          table: { headers: [], rows: [] },
+          options: {
+            opt1: 'val1',
+            title: {
+              label: 'My title',
+              font: 'Arial.bold'
+            }
+          }
+        }
+      ]
+    }
+    const values = { }
+    processTemplate(mockDoc, template, values)
+
+    expect(mockDoc.table).toHaveBeenCalledWith({ headers: [], rows: [] }, { opt1: 'val1', subtitle: ' ' })
+  })
+
   test('should handle rectangle', () => {
     const template = {
       definition: [

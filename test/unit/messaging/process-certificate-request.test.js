@@ -53,7 +53,7 @@ describe('process certificate request message', () => {
     })
 
     expect(uploadFile).toHaveBeenCalledTimes(1)
-    expect(uploadFile).toHaveBeenCalledWith('ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
+    expect(uploadFile).toHaveBeenCalledWith('certificates', 'ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
 
     expect(mockReceiver.completeMessage).toHaveBeenCalledTimes(1)
   })
@@ -91,7 +91,7 @@ describe('process certificate request message', () => {
     })
 
     expect(uploadFile).toHaveBeenCalledTimes(1)
-    expect(uploadFile).toHaveBeenCalledWith('ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
+    expect(uploadFile).toHaveBeenCalledWith('certificates', 'ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
 
     expect(mockReceiver.completeMessage).toHaveBeenCalledTimes(1)
   })
