@@ -11,8 +11,12 @@ describe('Populate-template test', () => {
   const saveFn = jest.fn()
   const setTextFn1 = jest.fn()
   const setTextFn2 = jest.fn()
+  const setTextFn3 = jest.fn()
+  const setTextFn4 = jest.fn()
   let field1
   let field2
+  let field3
+  let field4
 
   beforeEach(async () => {
     jest.resetAllMocks()
@@ -26,12 +30,20 @@ describe('Populate-template test', () => {
     field2 = new PDFTextField()
     field2.getName = jest.fn().mockReturnValue('ddi_field_name_2')
     field2.setText = setTextFn2
+    field3 = {}
+    field3.getName = jest.fn().mockReturnValue('ddi_field_name_3')
+    field3.setText = setTextFn3
+    field4 = new PDFTextField()
+    field4.getName = jest.fn().mockReturnValue('xxx_field_name_4')
+    field4.setText = setTextFn4
 
     PDFDocument.load = jest.fn().mockReturnValue({
       getForm: jest.fn().mockReturnValue({
         getFields: jest.fn().mockReturnValue([
           field1,
-          field2
+          field2,
+          field3,
+          field4
         ])
       }),
       save: saveFn
@@ -55,7 +67,9 @@ describe('Populate-template test', () => {
         },
         fieldData: {
           ddi_field_name_1: 'field1Value',
-          ddi_field_name_2: 'field2Value'
+          ddi_field_name_2: 'field2Value',
+          ddi_field_name_3: 'field3Value',
+          xxx_field_name_4: 'field4Value'
         }
       }
     }
@@ -64,6 +78,8 @@ describe('Populate-template test', () => {
     expect(response.statusCode).toBe(200)
     expect(setTextFn1).toHaveBeenCalledWith('field1Value')
     expect(setTextFn2).toHaveBeenCalledWith('field2Value')
+    expect(setTextFn3).not.toHaveBeenCalled()
+    expect(setTextFn4).not.toHaveBeenCalled()
     expect(uploadFile).toHaveBeenCalled()
   })
 

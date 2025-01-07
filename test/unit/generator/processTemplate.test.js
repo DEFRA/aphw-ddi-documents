@@ -1,9 +1,10 @@
-const { processTemplate } = require('../../../app/lib/generator/certificate')
+const { processTemplate, doStripe, calcTableWidth } = require('../../../app/lib/generator/certificate')
 
 const mockList = jest.fn()
 const mockFontSize = jest.fn().mockImplementation(() => {
   return { list: mockList }
 })
+const addBackgroundFn = jest.fn()
 const mockDoc = {
   font: jest.fn().mockImplementation(() => {
     return { fontSize: mockFontSize }
@@ -16,7 +17,8 @@ const mockDoc = {
   rect: jest.fn(),
   stroke: jest.fn(),
   moveDown: jest.fn(),
-  lineWidth: jest.fn()
+  lineWidth: jest.fn(),
+  addBackground: addBackgroundFn
 }
 
 describe('processTemplate', () => {
@@ -248,6 +250,79 @@ describe('processTemplate', () => {
     })
     expect(mockDoc.rect).toHaveBeenCalledWith(100, 200, 0, 100)
     expect(mockDoc.stroke).toHaveBeenCalled()
+    expect(mockDoc.table.mock.calls[0][1].prepareRow).toBe(undefined)
+  })
+
+  test('should handle table with striped rows', () => {
+    const template = {
+      definition: [
+        {
+          type: 'table',
+          table: {
+            headers: [{ label: 'Age', headerColor: 'white', width: 190 }],
+            rows: [['12'], ['45'], ['65']]
+          },
+          options: {
+            opt1: 'val1',
+            stripedRows: true,
+            x: 100,
+            y: 200
+          }
+        }
+      ]
+    }
+    const values = { }
+    mockDoc.x = 100
+    mockDoc.y = 300
+    processTemplate(mockDoc, template, values)
+
+    expect(mockDoc.table).toHaveBeenCalledWith({
+      headers: [{ label: 'Age', headerColor: 'white', width: 190 }],
+      rows: [['12'], ['45'], ['65']]
+    },
+    {
+      opt1: 'val1',
+      x: 100,
+      y: 200,
+      stripedRows: true,
+      prepareRow: expect.anything(jest.fn())
+    })
+    expect(mockDoc.table.mock.calls[0][1].prepareRow).not.toBe(undefined)
+  })
+
+  test('should handle table with data rows being passed dynamically', () => {
+    const template = {
+      definition: [
+        {
+          type: 'table',
+          table: {
+            headers: [{ label: 'Age', headerColor: 'white', width: 190 }],
+            rows: {},
+            rowDataKey: 'myTableRows'
+          },
+          options: {
+            opt1: 'val1',
+            x: 100,
+            y: 200
+          }
+        }
+      ]
+    }
+    const values = { myTableRows: [['12'], ['45'], ['65']] }
+    mockDoc.x = 100
+    mockDoc.y = 300
+    processTemplate(mockDoc, template, values)
+
+    expect(mockDoc.table).toHaveBeenCalledWith({
+      headers: [{ label: 'Age', headerColor: 'white', width: 190 }],
+      rows: [['12'], ['45'], ['65']],
+      rowDataKey: 'myTableRows'
+    },
+    {
+      opt1: 'val1',
+      x: 100,
+      y: 200
+    })
   })
 
   test('should handle rectangle', () => {
@@ -267,5 +342,53 @@ describe('processTemplate', () => {
 
     expect(mockDoc.rect).toHaveBeenCalledWith(45, 180, 150, 50)
     expect(mockDoc.stroke).toHaveBeenCalled()
+  })
+
+  describe('doStripe', () => {
+    test('should handle first row', () => {
+      doStripe(mockDoc, 'Arial.normal', 10, 0, {})
+      expect(mockDoc.font).toHaveBeenCalledTimes(1)
+      expect(mockDoc.addBackground).toHaveBeenCalledTimes(1)
+    })
+
+    test('should handle second row', () => {
+      doStripe(mockDoc, 'Arial.normal', 10, 1, {})
+      expect(mockDoc.font).toHaveBeenCalledTimes(1)
+      expect(mockDoc.addBackground).toHaveBeenCalledTimes(0)
+    })
+
+    test('should handle odd row', () => {
+      doStripe(mockDoc, 'Arial.normal', 10, 7, {})
+      expect(mockDoc.font).toHaveBeenCalledTimes(1)
+      expect(mockDoc.addBackground).toHaveBeenCalledTimes(0)
+    })
+
+    test('should handle even row', () => {
+      doStripe(mockDoc, 'Arial.normal', 10, 8, {})
+      expect(mockDoc.font).toHaveBeenCalledTimes(1)
+      expect(mockDoc.addBackground).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('calcTableWidth', () => {
+    test('should handle single column', () => {
+      const table = {
+        headers: [{ label: 'Age', headerColor: 'white', width: 190 }]
+      }
+      const res = calcTableWidth(table)
+      expect(res).toBe(190)
+    })
+
+    test('should handle multiple columns', () => {
+      const table = {
+        headers: [
+          { label: 'Name', headerColor: 'white', width: 190 },
+          { label: 'Age', headerColor: 'white', width: 30 },
+          { label: 'Height', headerColor: 'white', width: 45 }
+        ]
+      }
+      const res = calcTableWidth(table)
+      expect(res).toBe(190 + 30 + 45)
+    })
   })
 })

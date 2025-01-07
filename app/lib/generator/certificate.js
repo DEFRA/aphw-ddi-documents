@@ -7,6 +7,11 @@ const calcTableWidth = (table) => {
   return table.headers.reduce((accumulator, current) => accumulator + current.width, 0)
 }
 
+const doStripe = (doc, fontId, size, indexRow, rectCell) => {
+  doc.font(findFont(fontId)).fontSize(size)
+  indexRow % 2 === 0 && doc.addBackground(rectCell, 'grey', 0.15)
+}
+
 const processTemplate = (doc, template, values) => {
   for (const item of template.definition) {
     const { type, name, key, text, items, font: fontId, size, x, y, lineBreak, table, width, height, options } = item
@@ -46,9 +51,8 @@ const processTemplate = (doc, template, values) => {
         const padding = options?.padding ?? 0
         const titleOffset = options?.title ? padding : 0
         if (options?.stripedRows) {
-          options.prepareRow = (_row, _indexColumn, indexRow, rectRow, _rectCell) => {
-            doc.font(findFont(fontId)).fontSize(size)
-            indexRow % 2 === 0 && doc.addBackground(_rectCell, 'grey', 0.15)
+          options.prepareRow = (_row, _indexColumn, indexRow, _rectRow, rectCell) => {
+            doStripe(doc, fontId, size, indexRow, rectCell)
           }
         }
         if (table.rowDataKey) {
@@ -146,5 +150,7 @@ const generateCertificate = (template, data) => {
 module.exports = {
   generateCertificate,
   shuffleUpAddressLines,
-  processTemplate
+  processTemplate,
+  doStripe,
+  calcTableWidth
 }
