@@ -15,7 +15,8 @@ const mockDoc = {
   table: jest.fn(),
   rect: jest.fn(),
   stroke: jest.fn(),
-  moveDown: jest.fn()
+  moveDown: jest.fn(),
+  lineWidth: jest.fn()
 }
 
 describe('processTemplate', () => {
@@ -207,6 +208,46 @@ describe('processTemplate', () => {
     processTemplate(mockDoc, template, values)
 
     expect(mockDoc.table).toHaveBeenCalledWith({ headers: [], rows: [] }, { opt1: 'val1', subtitle: ' ' })
+  })
+
+  test('should handle table with border', () => {
+    const template = {
+      definition: [
+        {
+          type: 'table',
+          table: { headers: [], rows: [] },
+          options: {
+            opt1: 'val1',
+            outerBorder: {
+              disabled: false,
+              width: 2
+            },
+            x: 100,
+            y: 200
+          }
+        }
+      ]
+    }
+    const values = { }
+    mockDoc.x = 100
+    mockDoc.y = 300
+    processTemplate(mockDoc, template, values)
+
+    expect(mockDoc.table).toHaveBeenCalledWith({
+      headers: [],
+      rows: []
+    },
+    {
+      opt1: 'val1',
+      x: 100,
+      y: 200,
+      outerBorder: {
+        disabled: false,
+        width: 2
+      }
+    })
+    expect(mockDoc.rect).toHaveBeenCalledWith(100, 200, 0, 100)
+    expect(mockDoc.stroke).toHaveBeenCalled()
   })
 
   test('should handle rectangle', () => {
