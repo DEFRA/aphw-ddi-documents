@@ -1,7 +1,7 @@
 describe('certificate repo', () => {
   const { storageConfig } = require('../../../../app/config')
   const { blobServiceClient } = require('../../../../app/lib/storage/get-blob-client')
-  const { uploadCertificate } = require('../../../../app/lib/storage/repos/certificate')
+  const { uploadFile } = require('../../../../app/lib/storage/repos/uploading')
 
   beforeAll(async () => {
     const container = blobServiceClient.getContainerClient(storageConfig.certificateContainer)
@@ -12,7 +12,7 @@ describe('certificate repo', () => {
   test('should upload certificate', async () => {
     const buffer = Buffer.from('hello world')
 
-    await uploadCertificate(123456, '24bfda00-efa5-41d4-8711-9d31d7fcca65', buffer)
+    await uploadFile('certificates', 123456, '24bfda00-efa5-41d4-8711-9d31d7fcca65', buffer)
 
     const container = blobServiceClient.getContainerClient(storageConfig.certificateContainer)
     const blobClient = container.getBlockBlobClient('123456/24bfda00-efa5-41d4-8711-9d31d7fcca65.pdf')

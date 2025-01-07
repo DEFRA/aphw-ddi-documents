@@ -3,6 +3,15 @@ const PDFDocument = require('pdfkit-table')
 const { findFont } = require('./fonts')
 const { formatDate } = require('../date-helpers')
 
+const calcTableWidth = (table) => {
+  return table.headers.reduce((accumulator, current) => accumulator + current.width, 0)
+}
+
+const doStripe = (doc, fontId, size, indexRow, rectCell) => {
+  doc.font(findFont(fontId)).fontSize(size)
+  indexRow % 2 === 0 && doc.addBackground(rectCell, 'grey', 0.15)
+}
+
 const processTemplate = (doc, template, values) => {
   for (const item of template.definition) {
     const { type, name, key, text, items, font: fontId, size, x, y, lineBreak, table, width, height, options } = item
@@ -37,7 +46,35 @@ const processTemplate = (doc, template, values) => {
         break
       }
       case 'table': {
+        const startX = doc.x
+        const startY = doc.y
+        const padding = options?.padding ?? 0
+        const titleOffset = options?.title ? padding : 0
+        if (options?.stripedRows) {
+          options.prepareRow = (_row, _indexColumn, indexRow, _rectRow, rectCell) => {
+            doStripe(doc, fontId, size, indexRow, rectCell)
+          }
+        }
+        if (table.rowDataKey) {
+          table.rows = values[table.rowDataKey]
+        }
+        if (options?.title) {
+          doc.font(findFont(options.title.font))
+            .fontSize(options.title.size)
+          doc.text(options.title.label, options.x + padding, options.y + padding - 2)
+          delete options.title
+          options.subtitle = ' '
+        }
         doc.table(table, options)
+        if (options?.outerBorder?.disabled === false) {
+          const rectX = options.x ?? startX
+          const rectY = options.y ?? startY
+          if (options.outerBorder?.width) {
+            doc.lineWidth(options.outerBorder.width)
+          }
+          doc.rect(rectX, rectY, calcTableWidth(table), doc.y - rectY - padding - titleOffset)
+          doc.stroke()
+        }
         break
       }
       case 'rect': {
@@ -65,7 +102,10 @@ const getCertificateValues = (data) => {
     dogSex: data.dog.sex,
     dogBirthDate: data.dog.birthDate ? formatDate(data.dog.birthDate) : '',
     dogColour: data.dog.colour,
-    certificateIssueDate: data.dog.certificateIssued ? formatDate(data.dog.certificateIssued) : formatDate(new Date())
+    certificateIssueDate: data.dog.certificateIssued ? formatDate(data.dog.certificateIssued) : formatDate(new Date()),
+    dogDetails: data.dogDetails,
+    ownerDetails: data.ownerDetails,
+    exemptionDetails: data.exemptionDetails
   }
   shuffleUpAddressLines(model)
   return model
@@ -110,5 +150,7 @@ const generateCertificate = (template, data) => {
 module.exports = {
   generateCertificate,
   shuffleUpAddressLines,
-  processTemplate
+  processTemplate,
+  doStripe,
+  calcTableWidth
 }
