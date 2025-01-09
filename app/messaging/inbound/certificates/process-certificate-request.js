@@ -6,32 +6,37 @@ const { uploadFile } = require('../../../lib/storage/repos/uploading')
 const { validateCertificateRequest } = require('./certificate-request-schema')
 const { getCertificateTemplate } = require('../../../lib/storage/repos/certificate-template')
 const { sendCertificateIssuedToAudit } = require('../../outbound/send-audit')
+const { DOWNLOAD_REQUESTED } = require('../../../constants/events')
+const { extendData } = require('../../../lib/generator/extend-data')
 
 const processCertificateIssueRequest = async (message, receiver) => {
   try {
     const data = validateCertificateRequest(message.body)
 
-    console.log('Received DDI certificate issue request: ', util.inspect(message.body, false, null, true))
+    console.log('Received DDI document request: ', util.inspect(message.body, false, null, true))
 
     const templateKey = `${data.exemptionOrder}${data.owner?.organisationName ? '_with_org' : ''}`
+    const templateName = message.applicationProperties?.type === DOWNLOAD_REQUESTED ? 'police-download' : templateKey
 
-    const template = await getCertificateTemplate(templateKey)
+    const template = await getCertificateTemplate(templateName)
 
-    console.log(`Got certificate template with key ${templateKey}`)
+    console.log(`Got template with name ${templateName}`)
 
-    const cert = await generateCertificate(template, data)
+    const extendedData = extendData(templateName, data)
 
-    console.log('Generated certificate')
+    const cert = await generateCertificate(template, extendedData)
+
+    console.log('Generated document')
 
     await uploadFile(storageConfig.certificateContainer, data.dog.indexNumber, data.certificateId, cert)
 
     await sendCertificateIssuedToAudit(data)
 
-    console.log('Uploaded certificate')
+    console.log('Uploaded document')
 
     await receiver.completeMessage(message)
   } catch (err) {
-    console.log('Unable to process DDI certificate issue request: ', err.message)
+    console.log('Unable to process DDI document request: ', err.message)
     await receiver.deadLetterMessage(message)
   }
 }

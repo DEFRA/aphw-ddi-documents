@@ -50,22 +50,30 @@ const processTemplate = (doc, template, values) => {
         const startY = doc.y
         const padding = options?.padding ?? 0
         const titleOffset = options?.title ? padding : 0
+
         if (options?.stripedRows) {
           options.prepareRow = (_row, _indexColumn, indexRow, _rectRow, rectCell) => {
             doStripe(doc, fontId, size, indexRow, rectCell)
           }
         }
+
         if (table.rowDataKey) {
           table.rows = values[table.rowDataKey]
         }
+
         if (options?.title) {
           doc.font(findFont(options.title.font))
             .fontSize(options.title.size)
-          doc.text(options.title.label, options.x + padding, options.y + padding - 2)
+          doc.text(options.title.label, (options.x ?? startX) + padding, (options.y ?? startY) + padding - 2)
           delete options.title
           options.subtitle = ' '
         }
+
+        options.x = options.x ?? startX
+        options.y = options.y ?? startY
+
         doc.table(table, options)
+
         if (options?.outerBorder?.disabled === false) {
           const rectX = options.x ?? startX
           const rectY = options.y ?? startY
@@ -105,7 +113,8 @@ const getCertificateValues = (data) => {
     certificateIssueDate: data.dog.certificateIssued ? formatDate(data.dog.certificateIssued) : formatDate(new Date()),
     dogDetails: data.dogDetails,
     ownerDetails: data.ownerDetails,
-    exemptionDetails: data.exemptionDetails
+    exemptionDetails: data.exemptionDetails,
+    recordHistory: data.recordHistory
   }
   shuffleUpAddressLines(model)
   return model

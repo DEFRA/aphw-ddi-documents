@@ -33,16 +33,19 @@ describe('process certificate request message', () => {
       certificateId: '24bfda00-efa5-41d4-8711-9d31d7fcca65',
       owner: {
         name: 'Mr Owner',
+        birthDate: '',
         address: {
           line1: '1 The Street',
           line2: '',
           line3: '',
-          postcode: 'AB12 3CD'
+          postcode: 'AB12 3CD',
+          country: ''
         }
       },
       dog: {
         indexNumber: 'ED1234',
         microchipNumber: '12345',
+        microchipNumber2: '',
         name: 'Fido',
         breed: 'Breed 1',
         sex: 'Male',
@@ -74,13 +77,16 @@ describe('process certificate request message', () => {
           line1: '1 The Street',
           line2: '',
           line3: '',
-          postcode: 'AB12 3CD'
+          postcode: 'AB12 3CD',
+          country: ''
         },
+        birthDate: '',
         organisationName: 'My Organisation'
       },
       dog: {
         indexNumber: 'ED1234',
         microchipNumber: '12345',
+        microchipNumber2: '',
         name: 'Fido',
         breed: 'Breed 1',
         sex: 'Male',
