@@ -26,7 +26,6 @@ const processCertificateIssueRequest = async (message, receiver) => {
 
     const extendedData = extendData(templateName, data)
 
-    console.log('JB extendedData', extendedData)
     const cert = await generateCertificate(template, extendedData)
 
     console.log('Generated document')

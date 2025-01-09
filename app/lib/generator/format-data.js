@@ -31,8 +31,26 @@ const shuffleAddress = (address) => {
   return rows
 }
 
+const createBullets = (rows) => {
+  if (rows?.length > 0) {
+    const amendedRows = rows.map(r => {
+      if (r?.length > 1) {
+        const upperFirst = r.substr(0, 1).toUpperCase()
+        const restOfLine = r.substr(1)
+        return `- ${upperFirst}${restOfLine}`
+      } else {
+        return `- ${r}`
+      }
+    })
+    return amendedRows.join('\n')
+  } else {
+    return ''
+  }
+}
+
 module.exports = {
   shuffleAddress,
   getAddressLabel,
-  valueOrNotRecorded
+  valueOrNotRecorded,
+  createBullets
 }

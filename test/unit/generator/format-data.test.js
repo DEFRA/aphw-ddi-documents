@@ -1,5 +1,5 @@
 describe('format data', () => {
-  const { valueOrNotRecorded, getAddressLabel, shuffleAddress } = require('../../../app/lib/generator/format-data')
+  const { valueOrNotRecorded, getAddressLabel, shuffleAddress, createBullets } = require('../../../app/lib/generator/format-data')
 
   describe('valueOrNotRecorded', () => {
     test('should return value', () => {
@@ -121,13 +121,30 @@ describe('format data', () => {
 
       const res = shuffleAddress(address)
 
-      console.log('JB res', res)
       expect(res).toEqual([
         ['Address:', '1 Test Street'],
         [' ', 'TS1 1TS'],
         [' ', ' '],
         [' ', ' ']
       ])
+    })
+  })
+
+  describe('createBullets', () => {
+    test('should handle no rows', () => {
+      expect(createBullets(null)).toEqual('')
+    })
+
+    test('should handle one row', () => {
+      expect(createBullets(['test row text'])).toEqual('- Test row text')
+    })
+
+    test('should handle short row', () => {
+      expect(createBullets(['a'])).toEqual('- a')
+    })
+
+    test('should handle many rows', () => {
+      expect(createBullets(['test row text', 'row 2', 'row 3', 'Row 4'])).toEqual('- Test row text\n- Row 2\n- Row 3\n- Row 4')
     })
   })
 })

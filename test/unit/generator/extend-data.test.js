@@ -118,7 +118,7 @@ describe('extend data', () => {
       ],
       exemptionDetails: [
         ['Status:', 'In breach', '', 'CDO issue date:', '5 Jun 2024'],
-        ['Breach reason(s):', 'Reason 1\nReason 2', '', 'CDO expiry date:', '5 Aug 2024'],
+        ['Breach reason(s):', '- Reason 1\n- Reason 2', '', 'CDO expiry date:', '5 Aug 2024'],
         ['Exemption order:', '2015', '', 'Last known insurance', ''],
         ['Certificate issued date:', '2 Mar 2025', '', 'renewal date:', '17 Dec 2025']
       ],

@@ -1,5 +1,5 @@
 const { formatDateAsWords } = require('../date-helpers')
-const { valueOrNotRecorded, shuffleAddress } = require('./format-data')
+const { valueOrNotRecorded, shuffleAddress, createBullets } = require('./format-data')
 
 const extendData = (templateName, data) => {
   if (templateName !== 'police-download') {
@@ -33,7 +33,7 @@ const extendData = (templateName, data) => {
 
   extendedData.exemptionDetails = [
     ['Status:', data.exemption.status, '', 'CDO issue date:', data.exemption.cdoIssued ? formatDateAsWords(data.exemption.cdoIssued) : ''],
-    ['Breach reason(s):', data.exemption.breachReasons?.length ? data.exemption.breachReasons.join('\n') : 'Not applicable', '', 'CDO expiry date:', data.exemption.cdoExpiry ? formatDateAsWords(data.exemption.cdoExpiry) : ''],
+    ['Breach reason(s):', data.exemption.breachReasons?.length ? createBullets(data.exemption.breachReasons) : 'Not applicable', '', 'CDO expiry date:', data.exemption.cdoExpiry ? formatDateAsWords(data.exemption.cdoExpiry) : ''],
     ['Exemption order:', data.exemption.exemptionOrder, '', 'Last known insurance', ''],
     ['Certificate issued date:', data.exemption.certificateIssued ? formatDateAsWords(data.exemption.certificateIssued) : 'Not recorded', '', 'renewal date:', data.exemption.insuranceRenewal ? formatDateAsWords(data.exemption.insuranceRenewal) : 'Not recorded']
   ]
