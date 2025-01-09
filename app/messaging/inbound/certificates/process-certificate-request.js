@@ -15,8 +15,6 @@ const processCertificateIssueRequest = async (message, receiver) => {
 
     console.log('Received DDI document request: ', util.inspect(message.body, false, null, true))
 
-    console.log('Received DDI document request2: ', message.applicationProperties)
-
     const templateKey = `${data.exemptionOrder}${data.owner?.organisationName ? '_with_org' : ''}`
     const templateName = message.applicationProperties?.type === DOWNLOAD_REQUESTED ? 'police-download' : templateKey
 
