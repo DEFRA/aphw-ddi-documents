@@ -1,3 +1,4 @@
+const { formatDateAsTimestamp } = require('../../../app/lib/date-helpers')
 const { processTemplate, doStripe, calcTableWidth, doHeader, doFooter } = require('../../../app/lib/generator/certificate')
 
 const mockList = jest.fn()
@@ -442,5 +443,22 @@ describe('processTemplate', () => {
     doFooter(mockDoc, template, values)
     expect(mockDoc.text).toHaveBeenNthCalledWith(1, 'Page 1 of 2', 100, 200, { size: 10 })
     expect(mockDoc.text).toHaveBeenNthCalledWith(2, 'Page 2 of 2', 100, 200, { size: 10 })
+  })
+
+  test('replace token in text if necessary', () => {
+    const template = {
+      definition: [{
+        type: 'text',
+        text: 'Current time is {timestamp}',
+        size: 10,
+        x: 100,
+        y: 200,
+        font: 'Arial.normal'
+      }]
+    }
+    const values = { }
+    processTemplate(mockDoc, template, values)
+    const timeNow = formatDateAsTimestamp(new Date())
+    expect(mockDoc.text.mock.calls[0][0]).toBe('Current time is ' + timeNow)
   })
 })
