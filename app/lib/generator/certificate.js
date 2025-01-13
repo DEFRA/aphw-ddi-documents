@@ -215,5 +215,7 @@ module.exports = {
   shuffleUpAddressLines,
   processTemplate,
   doStripe,
-  calcTableWidth
+  calcTableWidth,
+  doHeader,
+  doFooter
 }

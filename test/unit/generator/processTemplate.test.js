@@ -1,4 +1,4 @@
-const { processTemplate, doStripe, calcTableWidth } = require('../../../app/lib/generator/certificate')
+const { processTemplate, doStripe, calcTableWidth, doHeader, doFooter } = require('../../../app/lib/generator/certificate')
 
 const mockList = jest.fn()
 const mockFontSize = jest.fn().mockImplementation(() => {
@@ -18,7 +18,9 @@ const mockDoc = {
   stroke: jest.fn(),
   moveDown: jest.fn(),
   lineWidth: jest.fn(),
-  addBackground: addBackgroundFn
+  addBackground: addBackgroundFn,
+  bufferedPageRange: jest.fn().mockReturnValue({ start: 0, count: 2 }),
+  switchToPage: jest.fn()
 }
 
 describe('processTemplate', () => {
@@ -390,5 +392,55 @@ describe('processTemplate', () => {
       const res = calcTableWidth(table)
       expect(res).toBe(190 + 30 + 45)
     })
+  })
+
+  test('doHeader ignores if no header defined', () => {
+    const template = {
+      definition: []
+    }
+    const values = { }
+    doHeader(mockDoc, template, values)
+    expect(mockDoc.image).not.toHaveBeenCalled()
+  })
+
+  test('doHeader processes header when defined', () => {
+    const template = {
+      definition: [{
+        type: 'header',
+        content: [{
+          type: 'image'
+        }]
+      }]
+    }
+    const values = { }
+    doHeader(mockDoc, template, values)
+    expect(mockDoc.image).toHaveBeenCalledWith(undefined, undefined, undefined, undefined)
+  })
+
+  test('doFooter ignores if no footer defined', () => {
+    const template = {
+      definition: []
+    }
+    const values = { }
+    doHeader(mockDoc, template, values)
+    expect(mockDoc.text).not.toHaveBeenCalled()
+  })
+
+  test('doFooter processes footer when defined', () => {
+    const template = {
+      definition: [{
+        type: 'footer',
+        content: [{
+          type: 'text',
+          size: 10,
+          x: 100,
+          y: 200
+        }]
+      }]
+    }
+    const values = { }
+    doFooter(mockDoc, template, values)
+    expect(mockDoc.text).toHaveBeenNthCalledWith(1, 'Page 1 of 2', 100, 200, { size: 10 })
+    expect(mockDoc.text).toHaveBeenNthCalledWith(2, 'Page 2 of 2', 100, 200, { size: 10 })
   })
 })
