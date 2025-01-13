@@ -1,5 +1,5 @@
 const { CERTIFICATE_GENERATION_AUDIT } = require('../../../app/constants/events')
-const { sendCertificateIssuedToAudit, sendEventToAudit, determinePk } = require('../../../app/messaging/outbound/send-audit')
+const { sendCertificateIssuedToAudit, sendDownloadToAudit, sendEventToAudit, determinePk } = require('../../../app/messaging/outbound/send-audit')
 
 jest.mock('../../../app/messaging/outbound/send-event')
 const { sendEvent } = require('../../../app/messaging/outbound/send-event')
@@ -68,12 +68,50 @@ describe('SendAudit test', () => {
     })
   })
 
+  describe('sendDownloadToAudit', () => {
+    test('should fail given no user', async () => {
+      await expect(sendDownloadToAudit({
+        dog: {
+          indexNumber: 'ED123',
+          name: 'Rex'
+        }
+      }, {})).rejects.toThrow('Username and displayname are required for auditing download')
+    })
+
+    test('should send successfully', async () => {
+      await sendDownloadToAudit({
+        dog: {
+          indexNumber: 'ED123',
+          name: 'Rex'
+        },
+        user: validUser
+      })
+
+      expect(sendEvent).toBeCalledWith(
+        {
+          data: {
+            message: '{"actioningUser":{"username":"hal-9000","displayname":"Hal 9000"},"details":{"pk":"ED123"}}'
+          },
+          id: expect.any(String),
+          partitionKey: 'ED123',
+          source: 'aphw-ddi-documents',
+          subject: 'enforcement user downloaded dog details',
+          type: 'uk.gov.defra.ddi.event.external.view.dog.download'
+        })
+    })
+  })
+
   describe('determinePk', () => {
     test('should get dog index number if gen cert type', () => {
       const entity = { dog: { indexNumber: 'ED123' } }
       const pk = determinePk(entity, CERTIFICATE_GENERATION_AUDIT)
 
       expect(pk).toBe('ED123')
+    })
+
+    test('should throw if wrong type', () => {
+      const entity = { dog: { indexNumber: 'ED123' } }
+      expect(() => determinePk(entity, 'invalid')).toThrow('Invalid object for audit event type: invalid')
     })
   })
 })

@@ -47,7 +47,7 @@ const sendCertificateIssuedToAudit = async (data) => {
 
 const sendDownloadToAudit = async (data) => {
   if (!isUserValid(data?.user)) {
-    throw new Error('Username and displayname are required for auditing certificate issued')
+    throw new Error('Username and displayname are required for auditing download')
   }
 
   const messagePayload = constructDownloadIssuedPayload(data)
