@@ -42,9 +42,9 @@ const schema = Joi.object({
     insuranceRenewal: Joi.date().iso().optional().allow(null).allow('').default('')
   }).optional(),
   history: Joi.array().items(Joi.object({
-    date: Joi.date().iso(),
-    activity: Joi.string(),
-    subList: Joi.array().items(Joi.string()).optional()
+    date: Joi.string().required(),
+    activityLabel: Joi.string().required(),
+    childList: Joi.array().items(Joi.array().items(Joi.string())).optional()
   })).optional()
 })
 

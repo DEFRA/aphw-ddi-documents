@@ -1,7 +1,7 @@
 const PDFDocument = require('pdfkit-table')
 
 const { findFont } = require('./fonts')
-const { formatDate } = require('../date-helpers')
+const { formatDate, formatDateAsTimestamp } = require('../date-helpers')
 
 const calcTableWidth = (table) => {
   return table.headers.reduce((accumulator, current) => accumulator + current.width, 0)
@@ -12,13 +12,38 @@ const doStripe = (doc, fontId, size, indexRow, rectCell) => {
   indexRow % 2 === 0 && doc.addBackground(rectCell, 'grey', 0.15)
 }
 
+const doHeader = (doc, template, values) => {
+  template.currentPageNum++
+  const header = template.definition.filter(x => x.type === 'header')
+  if (header?.length > 0) {
+    const headerTemplate = { ...template, definition: header[0].content }
+    processTemplate(doc, headerTemplate, values)
+  }
+}
+
+const doFooter = (doc, template, _values) => {
+  const footer = template.definition.filter(x => x.type === 'footer')
+  if (footer?.length > 0) {
+    const range = doc.bufferedPageRange()
+    const { size, x, y } = footer[0].content[0]
+    const options = { size }
+    for (let pageNum = range.start; pageNum < range.start + range.count; pageNum++) {
+      doc.switchToPage(pageNum)
+      doc.text(`Page ${pageNum + 1} of ${range.count}`, x, y, options)
+    }
+  }
+}
+
 const processTemplate = (doc, template, values) => {
   for (const item of template.definition) {
     const { type, name, key, text, items, font: fontId, size, x, y, lineBreak, table, width, height, options } = item
 
     switch (type) {
       case 'text': {
-        const value = values[key] ? values[key] : text
+        let value = values[key] ? values[key] : text
+        if (value.indexOf('{timestamp}') > -1) {
+          value = value.replace('{timestamp}', formatDateAsTimestamp(new Date()))
+        }
 
         doc.font(findFont(fontId))
           .fontSize(size)
@@ -51,6 +76,11 @@ const processTemplate = (doc, template, values) => {
         const padding = options?.padding ?? 0
         const titleOffset = options?.title ? padding : 0
 
+        const preTable = {
+          pageNum: template.currentPageNum,
+          y: doc.y
+        }
+
         if (options?.stripedRows) {
           options.prepareRow = (_row, _indexColumn, indexRow, _rectRow, rectCell) => {
             doStripe(doc, fontId, size, indexRow, rectCell)
@@ -74,14 +104,31 @@ const processTemplate = (doc, template, values) => {
 
         doc.table(table, options)
 
+        const postTable = {
+          pageNum: template.currentPageNum,
+          y: doc.y
+        }
+
         if (options?.outerBorder?.disabled === false) {
           const rectX = options.x ?? startX
           const rectY = options.y ?? startY
           if (options.outerBorder?.width) {
             doc.lineWidth(options.outerBorder.width)
           }
-          doc.rect(rectX, rectY, calcTableWidth(table), doc.y - rectY - padding - titleOffset)
-          doc.stroke()
+          // Handle split over page break
+          if (postTable.pageNum > preTable.pageNum) {
+            const marginTop = doc._pageBuffer ? doc._pageBuffer[0].margins.top : 65
+            const pageHeight = doc._pageBuffer ? doc._pageBuffer[0].height : 530
+            doc.switchToPage(preTable.pageNum - 1)
+            doc.rect(rectX, preTable.y, calcTableWidth(table), pageHeight - marginTop - preTable.y)
+            doc.stroke()
+            doc.switchToPage(postTable.pageNum - 1)
+            doc.rect(rectX, 65, calcTableWidth(table), doc.y - marginTop - padding - titleOffset)
+            doc.stroke()
+          } else {
+            doc.rect(rectX, rectY, calcTableWidth(table), doc.y - rectY - padding - titleOffset)
+            doc.stroke()
+          }
         }
         break
       }
@@ -133,10 +180,11 @@ const shuffleUpAddressLines = (addr) => {
 }
 
 const generateCertificate = (template, data) => {
+  template.currentPageNum = 0
   return new Promise((resolve) => {
     const values = getCertificateValues(data)
 
-    const doc = new PDFDocument({ autoFirstPage: false })
+    const doc = new PDFDocument({ autoFirstPage: false, bufferPages: true })
 
     const chunks = []
 
@@ -150,7 +198,13 @@ const generateCertificate = (template, data) => {
       resolve(buffer)
     })
 
+    doc.on('pageAdded', () => doHeader(doc, template, values))
+
     processTemplate(doc, template, values)
+
+    doFooter(doc, template, values)
+
+    doc.flushPages()
 
     doc.end()
   })

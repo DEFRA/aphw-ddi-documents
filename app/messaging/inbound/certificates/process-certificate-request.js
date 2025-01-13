@@ -5,7 +5,7 @@ const { generateCertificate } = require('../../../lib/generator/certificate')
 const { uploadFile } = require('../../../lib/storage/repos/uploading')
 const { validateCertificateRequest } = require('./certificate-request-schema')
 const { getCertificateTemplate } = require('../../../lib/storage/repos/certificate-template')
-const { sendCertificateIssuedToAudit } = require('../../outbound/send-audit')
+const { sendCertificateIssuedToAudit, sendDownloadToAudit } = require('../../outbound/send-audit')
 const { DOWNLOAD_REQUESTED } = require('../../../constants/events')
 const { extendData } = require('../../../lib/generator/extend-data')
 
@@ -30,7 +30,11 @@ const processCertificateIssueRequest = async (message, receiver) => {
 
     await uploadFile(storageConfig.certificateContainer, data.dog.indexNumber, data.certificateId, cert)
 
-    await sendCertificateIssuedToAudit(data)
+    if (message.applicationProperties?.type === DOWNLOAD_REQUESTED) {
+      await sendDownloadToAudit(data)
+    } else {
+      await sendCertificateIssuedToAudit(data)
+    }
 
     console.log('Uploaded document')
 

@@ -8,7 +8,12 @@ const formatDateAsWords = (date) => {
   return format(date, 'd MMM yyyy')
 }
 
+const formatDateAsTimestamp = (date) => {
+  return format(date, 'd MMM yyyy HH:mm')
+}
+
 module.exports = {
   formatDate,
-  formatDateAsWords
+  formatDateAsWords,
+  formatDateAsTimestamp
 }

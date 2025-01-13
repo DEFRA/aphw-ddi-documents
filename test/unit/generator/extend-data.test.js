@@ -53,8 +53,7 @@ describe('extend data', () => {
         ['Certificate issued date:', 'Not recorded', '', 'renewal date:', 'Not recorded']
       ],
       recordHistory: [
-        ['Date', 'Activity'],
-        ['1 Dec 2024', 'Dog status set to In breach:']
+        ['Date', 'Activity']
       ]
     })
   })
@@ -63,9 +62,14 @@ describe('extend data', () => {
     const minimalData = {
       dog: { indexNumber: 'ED123', breed: 'Breed1', name: 'Rex', colour: 'Brown', sex: 'Male', birthDate: new Date(2020, 2, 1), microchipNumber: '123451234512345', microchipNumber2: '111112222233333' },
       owner: { name: 'John Smith', address: { line1: '1 Test Street', line2: 'Testarea', line3: 'Testington', postcode: 'TS1 1TS', country: 'England' }, birthDate: new Date(1990, 5, 3) },
-      exemption: { status: 'In breach', exemptionOrder: '2015', cdoIssued: new Date(2024, 5, 5), cdoExpiry: new Date(2024, 7, 5), certificateIssued: new Date(2025, 2, 2), insuranceRenewal: new Date(2025, 11, 17), breachReasons: ['Reason 1', 'Reason 2'] }
+      exemption: { status: 'In breach', exemptionOrder: '2015', cdoIssued: new Date(2024, 5, 5), cdoExpiry: new Date(2024, 7, 5), certificateIssued: new Date(2025, 2, 2), insuranceRenewal: new Date(2025, 11, 17), breachReasons: ['Reason 1', 'Reason 2'] },
+      history: [
+        { date: '1 May 2024', activityLabel: 'Simple activity' },
+        { date: '2 May 2024', activityLabel: 'Complex activity:', childList: [['abc'], ['def'], ['ghi']] }
+      ]
     }
     const res = extendData('police-download', minimalData)
+
     expect(res).toEqual({
       dog: {
         indexNumber: 'ED123',
@@ -97,6 +101,10 @@ describe('extend data', () => {
         insuranceRenewal: new Date(2025, 11, 17),
         breachReasons: ['Reason 1', 'Reason 2']
       },
+      history: [
+        { date: '2 May 2024', activityLabel: 'Complex activity:', childList: [['abc'], ['def'], ['ghi']] },
+        { date: '1 May 2024', activityLabel: 'Simple activity' }
+      ],
       dogDetails: [
         ['Index number:', 'ED123'],
         ['Name:', 'Rex'],
@@ -124,7 +132,11 @@ describe('extend data', () => {
       ],
       recordHistory: [
         ['Date', 'Activity'],
-        ['1 Dec 2024', 'Dog status set to In breach:']
+        ['2 May 2024', 'Complex activity:'],
+        ['', ' - abc'],
+        ['', ' - def'],
+        ['', ' - ghi'],
+        ['1 May 2024', 'Simple activity']
       ]
     })
   })

@@ -39,9 +39,20 @@ const extendData = (templateName, data) => {
   ]
 
   extendedData.recordHistory = [
-    ['Date', 'Activity'],
-    ['1 Dec 2024', 'Dog status set to In breach:']
+    ['Date', 'Activity']
   ]
+  if (data.history?.length > 0) {
+    for (const historyRow of data.history.reverse()) {
+      if (historyRow.childList?.length > 0) {
+        extendedData.recordHistory.push([historyRow.date, historyRow.activityLabel])
+        for (const childRow of historyRow.childList) {
+          extendedData.recordHistory.push(['', ` - ${childRow[0]}`])
+        }
+      } else {
+        extendedData.recordHistory.push([historyRow.date, historyRow.activityLabel])
+      }
+    }
+  }
 
   return extendedData
 }
