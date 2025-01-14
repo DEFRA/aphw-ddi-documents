@@ -1,5 +1,5 @@
 const valueOrNotRecorded = (val) => {
-  return val ?? 'Not recorded'
+  return val && val !== '' ? val.trim() : 'Not recorded'
 }
 
 const getAddressLabel = (rows) => {

@@ -1,4 +1,3 @@
-const util = require('util')
 const { storageConfig } = require('../../../config')
 
 const { generateCertificate } = require('../../../lib/generator/certificate')
@@ -9,11 +8,19 @@ const { sendCertificateIssuedToAudit, sendDownloadToAudit } = require('../../out
 const { DOWNLOAD_REQUESTED } = require('../../../constants/events')
 const { extendData } = require('../../../lib/generator/extend-data')
 
+const constructDebug = (message) => {
+  return {
+    certificateId: message.body.certificateId,
+    indexNumber: message.body.dog.indexNumber,
+    type: message.applicationProperties?.type
+  }
+}
+
 const processCertificateIssueRequest = async (message, receiver) => {
   try {
     const data = validateCertificateRequest(message.body)
 
-    console.log('Received DDI document request: ', util.inspect(message.body, false, null, true))
+    console.log('Received DDI document request: ', constructDebug(message))
 
     const templateKey = `${data.exemptionOrder}${data.owner?.organisationName ? '_with_org' : ''}`
     const templateName = message.applicationProperties?.type === DOWNLOAD_REQUESTED ? 'police-download' : templateKey

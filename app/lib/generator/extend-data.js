@@ -11,25 +11,26 @@ const extendData = (templateName, data) => {
   extendedData.dogDetails = [
     ['Index number:', data.dog.indexNumber],
     ['Name:', valueOrNotRecorded(data.dog.name)],
-    ['Breed type:', data.dog.breed],
+    ['Breed type:', valueOrNotRecorded(data.dog.breed)],
     ['Colour:', valueOrNotRecorded(data.dog.colour)],
     ['Sex:', valueOrNotRecorded(data.dog.sex)],
     ['Date of birth:', data.dog.birthDate ? formatDateAsWords(data.dog.birthDate) : 'Not recorded'],
     ['Microchip number:', valueOrNotRecorded(data.dog.microchipNumber)]
   ]
 
-  if (data.dog.microchipNumber2) {
-    extendedData.dogDetails.push(['', data.dog.microchipNumber2])
-  }
-
   extendedData.ownerDetails = [
-    ['Name:', data.owner.name],
+    ['Name:', valueOrNotRecorded(data.owner.name)],
     ['Date of birth:', data.owner.birthDate ? formatDateAsWords(data.owner.birthDate) : 'Not recorded']
   ]
 
   extendedData.ownerDetails.push(...shuffleAddress(data.owner.address))
 
   extendedData.ownerDetails.push(['Country:', data.owner.address.country ?? ''])
+
+  if (data.dog.microchipNumber2) {
+    extendedData.dogDetails.push(['', data.dog.microchipNumber2])
+    extendedData.ownerDetails.push([' ', ' '])
+  }
 
   extendedData.exemptionDetails = [
     ['Status:', data.exemption.status, '', 'CDO issue date:', data.exemption.cdoIssued ? formatDateAsWords(data.exemption.cdoIssued) : ''],
@@ -42,7 +43,7 @@ const extendData = (templateName, data) => {
     ['Date', 'Activity']
   ]
   if (data.history?.length > 0) {
-    for (const historyRow of data.history.reverse()) {
+    for (const historyRow of data.history) {
       if (historyRow.childList?.length > 0) {
         extendedData.recordHistory.push([historyRow.date, historyRow.activityLabel])
         for (const childRow of historyRow.childList) {

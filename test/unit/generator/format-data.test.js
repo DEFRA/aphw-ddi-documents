@@ -11,6 +11,16 @@ describe('format data', () => {
       const cert = valueOrNotRecorded(null)
       expect(cert).toEqual('Not recorded')
     })
+
+    test('should return Not recorded when blank string', () => {
+      const cert = valueOrNotRecorded('')
+      expect(cert).toEqual('Not recorded')
+    })
+
+    test('should trim if leading/trailing spaces string', () => {
+      const cert = valueOrNotRecorded('  abc   ')
+      expect(cert).toEqual('abc')
+    })
   })
 
   describe('getAddressLabel', () => {
