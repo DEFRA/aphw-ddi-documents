@@ -122,7 +122,8 @@ describe('extend data', () => {
         [' ', 'Testarea'],
         [' ', 'Testington'],
         [' ', 'TS1 1TS'],
-        ['Country:', 'England']
+        ['Country:', 'England'],
+        [' ', ' ']
       ],
       exemptionDetails: [
         ['Status:', 'In breach', '', 'CDO issue date:', '5 Jun 2024'],
