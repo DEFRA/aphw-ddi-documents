@@ -47,7 +47,7 @@ const processCertificateIssueRequest = async (message, receiver) => {
 
     await receiver.completeMessage(message)
   } catch (err) {
-    console.log('Unable to process DDI document request: ', err.message)
+    console.log('Unable to process DDI document request: ', err)
     await receiver.deadLetterMessage(message)
   }
 }

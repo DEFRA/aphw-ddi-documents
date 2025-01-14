@@ -41,7 +41,7 @@ const processTemplate = (doc, template, values) => {
     switch (type) {
       case 'text': {
         let value = values[key] ? values[key] : text
-        if (value.indexOf('{timestamp}') > -1) {
+        if (value && value.indexOf('{timestamp}') > -1) {
           value = value.replace('{timestamp}', formatDateAsTimestamp(new Date()))
         }
 
