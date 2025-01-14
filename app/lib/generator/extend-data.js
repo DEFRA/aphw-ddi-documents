@@ -42,7 +42,7 @@ const extendData = (templateName, data) => {
     ['Date', 'Activity']
   ]
   if (data.history?.length > 0) {
-    for (const historyRow of data.history.reverse()) {
+    for (const historyRow of data.history) {
       if (historyRow.childList?.length > 0) {
         extendedData.recordHistory.push([historyRow.date, historyRow.activityLabel])
         for (const childRow of historyRow.childList) {

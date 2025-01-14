@@ -64,8 +64,8 @@ describe('extend data', () => {
       owner: { name: 'John Smith', address: { line1: '1 Test Street', line2: 'Testarea', line3: 'Testington', postcode: 'TS1 1TS', country: 'England' }, birthDate: new Date(1990, 5, 3) },
       exemption: { status: 'In breach', exemptionOrder: '2015', cdoIssued: new Date(2024, 5, 5), cdoExpiry: new Date(2024, 7, 5), certificateIssued: new Date(2025, 2, 2), insuranceRenewal: new Date(2025, 11, 17), breachReasons: ['Reason 1', 'Reason 2'] },
       history: [
-        { date: '1 May 2024', activityLabel: 'Simple activity' },
-        { date: '2 May 2024', activityLabel: 'Complex activity:', childList: [['abc'], ['def'], ['ghi']] }
+        { date: '2 May 2024', activityLabel: 'Complex activity:', childList: [['abc'], ['def'], ['ghi']] },
+        { date: '1 May 2024', activityLabel: 'Simple activity' }
       ]
     }
     const res = extendData('police-download', minimalData)
