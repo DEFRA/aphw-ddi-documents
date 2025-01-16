@@ -22,6 +22,8 @@ const processCertificateIssueRequest = async (message, receiver) => {
 
     console.log('Received DDI document request: ', constructDebug(message))
 
+    console.time('Document generation')
+
     const templateKey = `${data.exemptionOrder}${data.owner?.organisationName ? '_with_org' : ''}`
     const templateName = message.applicationProperties?.type === DOWNLOAD_REQUESTED ? 'police-download' : templateKey
 
@@ -33,17 +35,18 @@ const processCertificateIssueRequest = async (message, receiver) => {
 
     const cert = await generateCertificate(template, extendedData)
 
-    console.log('Generated document')
+    console.timeEnd('Document generation')
+    console.time('Document upload')
 
     await uploadFile(storageConfig.certificateContainer, data.dog.indexNumber, data.certificateId, cert)
+
+    console.timeEnd('Document upload')
 
     if (message.applicationProperties?.type === DOWNLOAD_REQUESTED) {
       await sendDownloadToAudit(data)
     } else {
       await sendCertificateIssuedToAudit(data)
     }
-
-    console.log('Uploaded document')
 
     await receiver.completeMessage(message)
   } catch (err) {
