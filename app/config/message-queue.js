@@ -17,7 +17,8 @@ const schema = Joi.object({
   eventsTopic: {
     address: Joi.string(),
     ...sharedConfigSchema
-  }
+  },
+  managedIdentityClientId: Joi.string().optional()
 })
 
 const sharedConfig = {
@@ -37,7 +38,8 @@ const config = {
   eventsTopic: {
     address: process.env.EVENTS_TOPIC_ADDRESS,
     ...sharedConfig
-  }
+  },
+  managedIdentityClientId: process.env.AZURE_CLIENT_ID
 }
 
 const { error, value } = schema.validate(config, { abortEarly: false })

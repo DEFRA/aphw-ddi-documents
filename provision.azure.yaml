@@ -1,0 +1,9 @@
+resources:
+  identity: aphw-ddi-documents
+  queues:
+    - name: aphw-ddi-certificate-request
+      role: receiver
+  topics:
+    - name: aphw-ddi-events
+      role: sender
+      duplicateDetection: true
