@@ -25,15 +25,15 @@ azureIdentity:
 deployment:
   replicas: 1
   minReplicas: 1
-  maxReplicas: 4
+  maxReplicas: 10
   cpuThreshold: 80
   memoryThreshold: 400Mi
 
 container:
-  requestMemory: 120Mi
-  requestCpu: 100m
-  limitMemory: 500Mi
-  limitCpu: 200m
+  requestMemory: 250Mi
+  requestCpu: 150m
+  limitMemory: 750Mi
+  limitCpu: 500m
   port: 3000
   azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
@@ -59,4 +59,4 @@ readinessProbe:
   failureThreshold: 3
   timeoutSeconds: 5
 
-aadPodIdentity: true
+workloadIdentity: true

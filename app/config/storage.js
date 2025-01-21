@@ -8,7 +8,8 @@ const schema = Joi.object({
   certificateTemplateContainer: Joi.string().default('certificate-templates'),
   attachmentsContainer: Joi.string().default('attachments'),
   useConnectionString: Joi.boolean().default(false),
-  createContainers: Joi.boolean().default(true)
+  createContainers: Joi.boolean().default(true),
+  managedIdentityClientId: Joi.string().optional()
 })
 
 // Build config
@@ -19,7 +20,8 @@ const config = {
   certificateTemplateContainer: process.env.AZURE_STORAGE_CERTIFICATE_TEMPLATE_CONTAINER,
   attachmentsContainer: process.env.AZURE_STORAGE_ATTACHMENTS_CONTAINER,
   useConnectionString: process.env.AZURE_STORAGE_USE_CONNECTION_STRING,
-  createContainers: process.env.AZURE_STORAGE_CREATE_CONTAINERS
+  createContainers: process.env.AZURE_STORAGE_CREATE_CONTAINERS,
+  managedIdentityClientId: process.env.AZURE_CLIENT_ID
 }
 
 // Validate config
