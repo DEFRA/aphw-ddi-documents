@@ -7,7 +7,7 @@ module.exports = {
   method: 'POST',
   path: '/populate-template',
   handler: async (request, h) => {
-    const { filename, fileGuid, saveFile } = request.payload.fileInfo
+    const { filename, fileGuid, saveFile, flattenPdf } = request.payload.fileInfo
     const { fieldData } = request.payload
 
     const file = await getAttachmentFile(filename)
@@ -24,6 +24,11 @@ module.exports = {
         }
       }
     }
+
+    if (flattenPdf) {
+      form.flatten()
+    }
+
     const pdfBytes = await doc.save()
     //
     // Ensure that any fields you want populated (but dont want to be editable) are set as 'readonly' in Acrobat

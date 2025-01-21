@@ -9,6 +9,7 @@ describe('Populate-template test', () => {
   let server
 
   const saveFn = jest.fn()
+  const flattenFn = jest.fn()
   const setTextFn1 = jest.fn()
   const setTextFn2 = jest.fn()
   const setTextFn3 = jest.fn()
@@ -44,7 +45,8 @@ describe('Populate-template test', () => {
           field2,
           field3,
           field4
-        ])
+        ]),
+        flatten: flattenFn
       }),
       save: saveFn
     })
@@ -68,7 +70,7 @@ describe('Populate-template test', () => {
         fieldData: {
           ddi_field_name_1: 'field1Value',
           ddi_field_name_2: 'field2Value',
-          ddi_field_name_3: 'field3Value',
+          ddi_field_name_3: null,
           xxx_field_name_4: 'field4Value'
         }
       }
@@ -103,6 +105,30 @@ describe('Populate-template test', () => {
     expect(setTextFn1).toHaveBeenCalledWith('field1Value')
     expect(setTextFn2).toHaveBeenCalledWith('field2Value')
     expect(uploadFile).not.toHaveBeenCalled()
+    expect(flattenFn).not.toHaveBeenCalled()
+  })
+
+  test('POST /populate-template route flattens PDF when requested to do so', async () => {
+    const options = {
+      method: 'POST',
+      url: '/populate-template',
+      payload: {
+        fileInfo: {
+          filename: 'file1.pdf',
+          flattenPdf: true
+        },
+        fieldData: {
+          ddi_field_name_1: 'field1Value',
+          ddi_field_name_2: 'field2Value'
+        }
+      }
+    }
+
+    const response = await server.inject(options)
+    expect(response.statusCode).toBe(204)
+    expect(setTextFn1).toHaveBeenCalledWith('field1Value')
+    expect(setTextFn2).toHaveBeenCalledWith('field2Value')
+    expect(flattenFn).toHaveBeenCalled()
   })
 
   afterEach(async () => {
