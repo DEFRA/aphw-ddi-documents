@@ -110,11 +110,7 @@ const processTemplate = (doc, template, values) => {
           y: doc.y
         }
 
-        console.log('JB preTable', preTable)
-        console.log('JB postTable', postTable)
-
         if (options?.outerBorder?.disabled === false) {
-          console.log('JB here1', options)
           const rectX = options.x ?? startX
           const rectY = options.y ?? startY
           if (options.outerBorder?.width) {
