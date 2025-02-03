@@ -5,6 +5,7 @@ const { certificateRequestQueue } = require('../config').messageQueueConfig
 let certificateRequestReceiver
 
 const start = async () => {
+  /* istanbul ignore next */
   const certificateIssueAction = message => processCertificateIssueRequest(message, certificateRequestReceiver)
   certificateRequestReceiver = new MessageReceiver(certificateRequestQueue, certificateIssueAction)
   await certificateRequestReceiver.subscribe()

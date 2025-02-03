@@ -328,6 +328,55 @@ describe('processTemplate', () => {
     })
   })
 
+  test('should handle table with data rows spanning more than one page', () => {
+    const template = {
+      definition: [
+        {
+          type: 'table',
+          table: {
+            headers: [{ label: 'Age', headerColor: 'white', width: 190 }],
+            rows: {},
+            rowDataKey: 'myTableRows'
+          },
+          options: {
+            opt1: 'val1',
+            x: 100,
+            y: 200,
+            outerBorder: { disabled: false }
+          }
+        }
+      ]
+    }
+    const values = {
+      myTableRows: [
+        ['1'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9'], ['10']
+      ]
+    }
+    mockDoc.x = 100
+    mockDoc.y = 300
+    template.currentPageNum = 1
+    mockDoc.table.mockImplementation(() => {
+      template.currentPageNum = 2
+    })
+
+    processTemplate(mockDoc, template, values)
+
+    expect(mockDoc.table).toHaveBeenCalledWith({
+      headers: [{ label: 'Age', headerColor: 'white', width: 190 }],
+      rows: [['1'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9'], ['10']],
+      rowDataKey: 'myTableRows'
+    },
+    {
+      opt1: 'val1',
+      x: 100,
+      y: 200,
+      outerBorder: { disabled: false }
+    })
+    expect(mockDoc.rect).toHaveBeenCalledTimes(2)
+    expect(mockDoc.rect.mock.calls[0]).toEqual([100, 300, 190, 165])
+    expect(mockDoc.rect.mock.calls[1]).toEqual([100, 65, 190, 235])
+  })
+
   test('should handle rectangle', () => {
     const template = {
       definition: [

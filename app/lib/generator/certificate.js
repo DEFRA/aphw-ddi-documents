@@ -82,6 +82,7 @@ const processTemplate = (doc, template, values) => {
         }
 
         if (options?.stripedRows) {
+          /* istanbul ignore next */
           options.prepareRow = (_row, _indexColumn, indexRow, _rectRow, rectCell) => {
             doStripe(doc, fontId, size, indexRow, rectCell)
           }

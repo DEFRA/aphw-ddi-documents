@@ -2,7 +2,7 @@ const Joi = require('joi')
 
 const sharedConfigSchema = {
   appInsights: Joi.object(),
-  host: Joi.string(),
+  host: Joi.string().required(),
   password: Joi.string(),
   username: Joi.string(),
   useCredentialChain: Joi.bool().default(false)
