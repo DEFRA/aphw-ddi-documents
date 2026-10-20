@@ -31,7 +31,8 @@
     "notifications-node-client": "^8.2.0",
     "pdfkit": "^0.14.0",
     "pdfkit-table": "^0.1.99",
-    "pdf-lib": "^1.17.1"
+    "pdf-lib": "^1.17.1",
+    "uuid": "^11.1.1"
   },
   "devDependencies": {
     "jest": "^30.5.2",
@@ -55,5 +56,8 @@
     "ignore": [
       "**/test-output/**"
     ]
+  },
+  "overrides": {
+    "uuid": "$uuid"
   }
 }

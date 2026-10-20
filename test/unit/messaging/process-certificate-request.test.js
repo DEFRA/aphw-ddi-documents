@@ -8,6 +8,9 @@ describe('process certificate request message', () => {
   jest.mock('../../../app/lib/storage/repos/certificate-template')
   const { getCertificateTemplate } = require('../../../app/lib/storage/repos/certificate-template')
 
+  jest.mock('../../../app/messaging/outbound/send-audit')
+  const { sendCertificateIssuedToAudit, sendDownloadToAudit } = require('../../../app/messaging/outbound/send-audit')
+
   const processCertificateIssueRequest = require('../../../app/messaging/inbound/certificates/process-certificate-request')
 
   const mockReceiver = require('../../mocks/messaging/receiver')
@@ -52,11 +55,18 @@ describe('process certificate request message', () => {
         birthDate: new Date('2019-01-01'),
         colour: 'White',
         certificateIssued: new Date('2020-01-01')
+      },
+      user: {
+        displayname: 'Dev User',
+        username: 'dev-username'
       }
     })
 
     expect(uploadFile).toHaveBeenCalledTimes(1)
     expect(uploadFile).toHaveBeenCalledWith('certificates', 'ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
+
+    expect(sendCertificateIssuedToAudit).toHaveBeenCalledTimes(1)
+    expect(sendDownloadToAudit).not.toHaveBeenCalled()
 
     expect(mockReceiver.completeMessage).toHaveBeenCalledTimes(1)
   })
@@ -93,11 +103,18 @@ describe('process certificate request message', () => {
         birthDate: new Date('2019-01-01'),
         colour: 'White',
         certificateIssued: new Date('2020-01-01')
+      },
+      user: {
+        displayname: 'Dev User',
+        username: 'dev-username'
       }
     })
 
     expect(uploadFile).toHaveBeenCalledTimes(1)
     expect(uploadFile).toHaveBeenCalledWith('certificates', 'ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
+
+    expect(sendCertificateIssuedToAudit).toHaveBeenCalledTimes(1)
+    expect(sendDownloadToAudit).not.toHaveBeenCalled()
 
     expect(mockReceiver.completeMessage).toHaveBeenCalledTimes(1)
   })
@@ -178,6 +195,9 @@ describe('process certificate request message', () => {
 
     expect(uploadFile).toHaveBeenCalledTimes(1)
     expect(uploadFile).toHaveBeenCalledWith('certificates', 'ED1234', '24bfda00-efa5-41d4-8711-9d31d7fcca65', Buffer.from(''))
+
+    expect(sendDownloadToAudit).toHaveBeenCalledTimes(1)
+    expect(sendCertificateIssuedToAudit).not.toHaveBeenCalled()
 
     expect(mockReceiver.completeMessage).toHaveBeenCalledTimes(1)
   })
