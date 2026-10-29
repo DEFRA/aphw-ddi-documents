@@ -1,1 +1,19 @@
 ---
+environment: production
+environmentCode: pre
+container:
+  messageQueueHost: PREFFCINFSB1001.servicebus.windows.net
+  certificateRequestQueue: aphw-ddi-certificate-request
+  eventsTopicAddress: aphw-ddi-events
+secretProviderClass:
+  azure:
+    keyvaultName: PREFFCINFKV1001
+    objects:
+      - objectName: pre-ffcahwr-appinsights-connectionString
+        objectType: secret
+  secretObjects:
+    - secretName: aphw-ddi-documents
+      type: Opaque
+      data:
+        - objectName: pre-ffcahwr-appinsights-connectionString
+          key: APPLICATIONINSIGHTS_CONNECTION_STRING
