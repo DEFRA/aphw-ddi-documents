@@ -22,3 +22,4 @@ services:
 
   aphw-ddi-documents-azurite:
     image: mcr.microsoft.com/azure-storage/azurite:3.30.0
+    command: azurite -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --skipApiVersionCheck

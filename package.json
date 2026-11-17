@@ -7,6 +7,7 @@
   "scripts": {
     "pretest": "npm run test:lint",
     "test": "jest --runInBand --forceExit",
+    "test:unit": "jest --testPathPatterns=test/unit --coverage=false",
     "test:watch": "jest --coverage=false --onlyChanged --watch --runInBand",
     "test:lint": "standard",
     "test:debug": "node --inspect-brk=0.0.0.0 ./node_modules/jest/bin/jest.js --coverage=false --onlyChanged --watch --runInBand --no-cache",
@@ -17,27 +18,28 @@
   "contributors": [],
   "license": "OGL-UK-3.0",
   "dependencies": {
-    "@azure/identity": "4.2.1",
-    "@azure/storage-blob": "^12.11.0",
-    "@hapi/hapi": "21.3.2",
-    "applicationinsights": "2.8.0",
+    "@azure/identity": "^4.13.3",
+    "@azure/storage-blob": "^12.17.0",
+    "@hapi/hapi": "^21.4.10",
+    "applicationinsights": "^3.16.0",
     "date-fns": "^3.2.0",
     "axios": "^1.7.7",
-    "fast-xml-parser": "^4.5.0",
-    "ffc-messaging": "2.9.1",
-    "joi": "^17.9.1",
-    "log-timestamp": "0.3.0",
-    "moment": "2.29.4",
-    "notifications-node-client": "^8.0.0",
+    "fast-xml-parser": "^5.11.2",
+    "ffc-messaging": "^2.10.10",
+    "joi": "^17.13.8",
+    "log-timestamp": "^0.3.0",
+    "moment": "^2.29.4",
+    "notifications-node-client": "^8.2.0",
     "pdfkit": "^0.14.0",
     "pdfkit-table": "^0.1.99",
-    "pdf-lib": "^1.17.1"
+    "pdf-lib": "^1.17.1",
+    "uuid": "^11.1.1"
   },
   "devDependencies": {
-    "jest": "29.7.0",
-    "jest-junit": "16.0.0",
-    "nodemon": "3.0.1",
-    "standard": "17.1.0"
+    "jest": "^30.5.2",
+    "jest-junit": "^17.0.0",
+    "nodemon": "^3.0.1",
+    "standard": "^17.1.2"
   },
   "standard": {
     "globals": [
@@ -55,5 +57,15 @@
     "ignore": [
       "**/test-output/**"
     ]
+  },
+  "overrides": {
+    "uuid": "$uuid",
+    "ffc-messaging": {
+      "joi": "^18.3.1",
+      "@azure/identity": "4.14.1"
+    },
+    "glob@^10": "^14.0.3",
+    "glob@^13": "^14.0.3",
+    "minimatch@^10": "^11.0.4"
   }
 }

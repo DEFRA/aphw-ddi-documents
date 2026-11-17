@@ -14,7 +14,7 @@ describe('SendAudit test', () => {
   describe('sendEventToAudit', () => {
     test('should send event to audit', async () => {
       await sendEventToAudit(CERTIFICATE_GENERATION_AUDIT, 'DDI Certificate Issued', 'issued cert', validUser)
-      expect(sendEvent).toBeCalledWith({
+      expect(sendEvent).toHaveBeenCalledWith({
         type: CERTIFICATE_GENERATION_AUDIT,
         source: 'aphw-ddi-documents',
         id: expect.any(String),
@@ -54,7 +54,7 @@ describe('SendAudit test', () => {
         user: validUser
       })
 
-      expect(sendEvent).toBeCalledWith(
+      expect(sendEvent).toHaveBeenCalledWith(
         {
           data: {
             message: '{"actioningUser":{"username":"hal-9000","displayname":"Hal 9000"},"operation":"certificate issued","details":{"dog":{"indexNumber":"ED123","name":"Rex"}}}'
@@ -87,7 +87,7 @@ describe('SendAudit test', () => {
         user: validUser
       })
 
-      expect(sendEvent).toBeCalledWith(
+      expect(sendEvent).toHaveBeenCalledWith(
         {
           data: {
             message: '{"actioningUser":{"username":"hal-9000","displayname":"Hal 9000"},"details":{"pk":"ED123"}}'

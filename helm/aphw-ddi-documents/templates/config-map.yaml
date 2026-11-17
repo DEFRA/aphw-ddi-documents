@@ -5,6 +5,8 @@ data:
   PORT: {{ quote .Values.container.port }}
   MESSAGE_QUEUE_HOST: {{ quote .Values.container.messageQueueHost }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
+  AZURE_STORAGE_USE_CONNECTION_STRING: {{ quote .Values.container.azureStorageUseConnectionString }}
+  AZURE_STORAGE_ACCOUNT_NAME: {{ quote .Values.container.azureStorageAccountName }}
   {{- if and (.Values.environmentCode) (not .Values.pr) }}
   CERTIFICATE_REQUEST_QUEUE_ADDRESS: {{ .Values.container.certificateRequestQueue }}-{{ .Values.environmentCode }}
   EVENTS_TOPIC_ADDRESS: {{ .Values.container.eventsTopicAddress }}-{{ .Values.environmentCode }}

@@ -1,1 +1,7 @@
 ---
+environment: production
+environmentCode: snd
+container:
+  messageQueueHost: SNDFFCINFSB2001.servicebus.windows.net
+  certificateRequestQueue: aphw-ddi-certificate-request
+  eventsTopicAddress: aphw-ddi-events

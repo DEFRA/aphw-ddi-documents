@@ -1,1 +1,19 @@
 ---
+environment: production
+environmentCode: test
+container:
+  messageQueueHost: DEVFFCINFSB1001.servicebus.windows.net
+  certificateRequestQueue: aphw-ddi-certificate-request
+  eventsTopicAddress: aphw-ddi-events
+secretProviderClass:
+  azure:
+    keyvaultName: DEVFFCINFKV1001
+    objects:
+      - objectName: devtest-ffcahwr-appInsights-connectionString
+        objectType: secret
+  secretObjects:
+    - secretName: aphw-ddi-documents
+      type: Opaque
+      data:
+        - objectName: devtest-ffcahwr-appInsights-connectionString
+          key: APPLICATIONINSIGHTS_CONNECTION_STRING

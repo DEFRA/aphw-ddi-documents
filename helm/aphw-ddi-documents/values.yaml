@@ -12,11 +12,10 @@ appInsights:
   connectionString:
 
 containerConfigMap:
-  name: aphw-ddi-documents-config-map
+  name: aphw-ddi-documents
 
 containerSecret:
-  name: aphw-ddi-documents-container-secret
-  type: Opaque
+  name: aphw-ddi-documents
 
 azureIdentity:
   clientID: not-a-real-clientID
@@ -35,12 +34,10 @@ container:
   limitMemory: 750Mi
   limitCpu: 500m
   port: 3000
-  azureStorageConnectionString: dummy
   azureStorageUseConnectionString: false
   azureStorageAccountName: aphwddi
   messageQueueHost: namespace.servicebus.windows.net
   certificateRequestQueue: aphw-ddi-certificate-request
-  notifyApiKey: notifyApiKey
   eventsTopicAddress: aphw-ddi-events
 
 livenessProbe:
@@ -60,3 +57,16 @@ readinessProbe:
   timeoutSeconds: 5
 
 workloadIdentity: true
+
+secretProviderClass:
+  azure:
+    keyvaultName: SNDFFCINFKV2001
+    objects:
+      - objectName: snd2-aphw-appinsights-connectionString
+        objectType: secret
+  secretObjects:
+    - secretName: aphw-ddi-documents
+      type: Opaque
+      data:
+        - objectName: snd2-aphw-appinsights-connectionString
+          key: APPLICATIONINSIGHTS_CONNECTION_STRING
